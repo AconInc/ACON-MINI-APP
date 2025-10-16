@@ -1,0 +1,73 @@
+# ================================
+# Dependencies 
+# ================================
+# Dependency directories
+node_modules/
+/ios/Pods/
+
+
+# ================================
+# Build & Output 
+# ================================
+# App-in-Toss build artifact
+*.ait
+
+# Build output
+/android/build/
+/ios/build/
+.expo/
+
+# ================================
+# Development Environment 
+# ================================
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# IDE & Editor files
+.idea/
+.vscode/
+*.iml
+
+# Local properties (SDK paths, etc.)
+/android/local.properties
+
+
+# ================================
+# Operating System (macOS) 
+# ================================
+.DS_Store
+.AppleDouble
+._*
+.Spotlight-V100
+.Trashes
+
+
+# ================================
+# Logs & Caches 
+# ================================
+# Log files
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Caches
+.eslintcache
+.parcel-cache
+
+
+# ================================
+# Platform Specific 
+# ================================
+# Android
+/android/app/build/
+/android/.gradle/
+*.apk
+*.keystore
+
+# iOS (Xcode)
+*.xcodeproj/project.xcworkspace
+*.xcodeproj/xcuserdata
+*.xcworkspace/xcuserdata
