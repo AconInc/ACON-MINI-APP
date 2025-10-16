@@ -7,9 +7,9 @@ export default defineConfig({
   plugins: [
     appsInToss({
       brand: {
-        displayName: 'acon-mini-app', // 화면에 노출될 앱의 한글 이름으로 바꿔주세요.
-        primaryColor: '#3182F6', // 화면에 노출될 앱의 기본 색상으로 바꿔주세요.
-        icon: null, // 화면에 노출될 앱의 아이콘 이미지 주소로 바꿔주세요.
+        displayName: '아콘', // 화면에 노출될 앱의 한글 이름으로 바꿔주세요.
+        primaryColor: '#FF4A02', // 화면에 노출될 앱의 기본 색상으로 바꿔주세요.
+        icon: 'https://raw.githubusercontent.com/AconInc/ACON-MINI-APP/refs/heads/main/app-icon.png', // 화면에 노출될 앱의 아이콘 이미지 주소로 바꿔주세요.
         bridgeColorMode: 'basic',
       },
       permissions: [],
