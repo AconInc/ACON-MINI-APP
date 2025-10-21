@@ -1,10 +1,12 @@
 import { appsInToss } from '@apps-in-toss/framework/plugins';
 import { defineConfig } from '@granite-js/react-native/config';
+import { router } from "@granite-js/plugin-router";
 
 export default defineConfig({
   scheme: 'intoss',
   appName: 'acon-mini-app',
   plugins: [
+    router(),
     appsInToss({
       brand: {
         displayName: '아콘', // 화면에 노출될 앱의 한글 이름으로 바꿔주세요.
