@@ -101,34 +101,17 @@ function Search() {
     <SafeAreaView style={styles.container}>
       <Text style={styles.title}>{`No more Research,\nAcon`}</Text>
 
-      <View style={styles.searchWrapper}>
-        <Icon name="icon-search" size={20} color={colors.grey500} />
-        <TextInput
-          value={value}
-          onChangeText={setValue}
-          style={styles.input}
-          placeholder=""
-          placeholderTextColor={styles.placeholder.color}
-          returnKeyType="search"
-        />
-        {/* Animated placeholder overlay */}
-        {value === '' && (
-          <View style={StyleSheet.absoluteFill} pointerEvents="none">
-            <Animated.Text
-              style={[
-                styles.placeholder,
-                {
-                  opacity: currentOpacity,
-                  transform: [{ translateY: currentY }],
-                },
-              ]}
-            >
-              {placeholders[currentIndex]}
-            </Animated.Text>
-          </View>
-        )}
-      </View>
+      <SearchInput
+        value={value}
+        onChangeText={setValue}
+        currentIndex={currentIndex}
+        currentOpacity={currentOpacity}
+        currentY={currentY}
+        placeholders={placeholders}
+      />
 
+      {/* Animated button container: 평소엔 bottom: 0 (safe area 안쪽), 키보드가 있으면 keyboard 바로 위 */}
+        {/* Animated placeholder overlay */}
       <Button display="block" viewStyle={styles.nextButton} onPress={handleNext}>
         다음
       </Button>
