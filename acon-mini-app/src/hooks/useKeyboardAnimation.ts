@@ -3,7 +3,7 @@ import { Animated, Keyboard, Platform } from 'react-native';
 
 export const useKeyboardAnimation = (safeBottom: number) => {
   const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
-  const buttonBottom = useRef(new Animated.Value(0)).current;
+  const buttonBottom = useRef(new Animated.Value(safeBottom)).current;
 
   useEffect(() => {
     const showEvent = Platform.OS === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow';
@@ -11,9 +11,12 @@ export const useKeyboardAnimation = (safeBottom: number) => {
 
     const onShow = (e: any) => {
       const h = e?.endCoordinates?.height ?? 300;
+      const bottomOffset =
+        Platform.OS === 'ios' ? h : Math.max(h - safeBottom, 0);
+        
       setIsKeyboardVisible(true);
       Animated.timing(buttonBottom, {
-        toValue: h - safeBottom,
+        toValue: bottomOffset,
         duration: 250,
         useNativeDriver: false,
       }).start();
@@ -21,7 +24,7 @@ export const useKeyboardAnimation = (safeBottom: number) => {
 
     const onHide = () => {
       Animated.timing(buttonBottom, {
-        toValue: 0,
+        toValue: safeBottom,
         duration: 200,
         useNativeDriver: false,
       }).start(() => setIsKeyboardVisible(false));

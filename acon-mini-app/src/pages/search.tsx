@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
-import { SafeAreaView, Animated, View } from 'react-native';
+import { Animated, View } from 'react-native';
+
 import { createRoute } from '@granite-js/react-native';
 import { Button, Text } from '@toss/tds-react-native';
 import { useSafeAreaInsets } from '@granite-js/native/react-native-safe-area-context';
 
 import { usePlaceholderAnimation } from 'hooks/usePlaceHolderAnimation';
 import { useKeyboardAnimation } from 'hooks/useKeyboardAnimation';
-import { postSearch } from 'api/search';
 import { searchStyles as styles } from 'styles/searchStyles';
+import { postSearch } from 'api/search';
 import SearchInput from '../components/searchInput';
 
 export const Route = createRoute('/search', {
@@ -37,7 +38,7 @@ function Search() {
   const { handleNext } = postSearch();
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <View style={styles.titleView}>
         <Text typography="st5" fontWeight="bold" color='#111'>
           {`No more Research,\nAcon`}
@@ -63,7 +64,7 @@ function Search() {
           다음
         </Button>
       </Animated.View>
-    </SafeAreaView>
+    </View>
   );
 }
 
