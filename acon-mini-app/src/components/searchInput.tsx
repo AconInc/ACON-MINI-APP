@@ -62,14 +62,14 @@ const styles = StyleSheet.create({
   input: {
     flex: 1,
     fontSize: 16,
-    marginLeft: 8,
+    marginLeft: 10,
     color: colors.grey800,
   },
   placeholder: {
     position: 'absolute',
-    left: 40,
-    top: 14,
-    fontSize: 16,
     color: colors.grey500,
+    left: 42,
+    top: 12,
+    fontSize: 16,
   },
 });
