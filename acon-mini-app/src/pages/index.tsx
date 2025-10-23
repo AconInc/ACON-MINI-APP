@@ -1,104 +1,68 @@
+import React, { useState } from 'react';
+import { Animated, View } from 'react-native';
+
 import { createRoute } from '@granite-js/react-native';
-import React from 'react';
-import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+import { Button, Text } from '@toss/tds-react-native';
+import { useSafeAreaInsets } from '@granite-js/native/react-native-safe-area-context';
+
+import { usePlaceholderAnimation } from 'hooks/usePlaceHolderAnimation';
+import { useKeyboardAnimation } from 'hooks/useKeyboardAnimation';
+import { searchStyles as styles } from 'styles/searchStyles';
+import { postSearch } from 'api/search';
+import SearchInput from '../components/searchInput';
 
 export const Route = createRoute('/', {
   component: Page,
 });
 
 function Page() {
-  const navigation = Route.useNavigation();
+  const placeholders = [
+    '카공하기 좋은 판교역 카페 추천해줘',
+    '요즘 인기 있는 루프탑 카페 찾아줘',
+    '조용한 공부 카페 알려줘',
+  ];
 
-  const goToAboutPage = () => {
-    navigation.navigate('/about');
-  };
+  // 🔹 Placeholder 애니메이션 값
+  const [value, setValue] = useState('');
+  const { currentIndex, currentOpacity, currentY } = usePlaceholderAnimation({
+    placeholders,
+    value,
+  });
+
+  // 🔹 다음 버튼 bottom (keyboard-aware 애니메이션)
+  const insets = useSafeAreaInsets();
+  const { isKeyboardVisible, buttonBottom } = useKeyboardAnimation(insets.bottom);
+
+  // 🔹 다음 버튼 network
+  const { handleNext } = postSearch();
 
   return (
-    <Container>
-      <Text style={styles.title}>🎉 Welcome! 🎉</Text>
-      <Text style={styles.subtitle}>
-        This is a demo page for the <Text style={styles.brandText}>Granite</Text> Framework.
-      </Text>
-      <Text style={styles.description}>This page was created to showcase the features of the Granite.</Text>
-      <TouchableOpacity style={styles.button} onPress={goToAboutPage}>
-        <Text style={styles.buttonText}>Go to About Page</Text>
-      </TouchableOpacity>
-    </Container>
+    <View style={[styles.container, {marginBottom: insets.bottom}]}>
+      <View style={styles.titleView}>
+        <Text typography="st5" fontWeight="bold" color="#111">
+          {`No more Research,\nAcon`}
+        </Text>
+      </View>
+
+      <SearchInput
+        value={value}
+        onChangeText={setValue}
+        currentIndex={currentIndex}
+        currentOpacity={currentOpacity}
+        currentY={currentY}
+        placeholders={placeholders}
+      />
+
+      {/* Animated button container: 평소엔 bottom: 0 (safe area 안쪽), 키보드가 있으면 keyboard 바로 위 */}
+      <Animated.View style={[styles.buttonContainer, { bottom: buttonBottom }]} pointerEvents="box-none">
+        <Button
+          display={isKeyboardVisible ? 'full' : 'block'}
+          viewStyle={isKeyboardVisible ? styles.buttonFull : styles.buttonBlock}
+          onPress={() => handleNext(value)}
+        >
+          다음
+        </Button>
+      </Animated.View>
+    </View>
   );
 }
-
-function Container({ children }: { children: React.ReactNode }) {
-  return <View style={styles.container}>{children}</View>;
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 16,
-    backgroundColor: 'white',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  brandText: {
-    color: '#0064FF',
-    fontWeight: 'bold',
-  },
-  text: {
-    fontSize: 24,
-    color: '#202632',
-    textAlign: 'center',
-    marginBottom: 10,
-  },
-  title: {
-    fontSize: 32,
-    fontWeight: 'bold',
-    color: '#1A202C',
-    textAlign: 'center',
-    marginBottom: 16,
-  },
-  subtitle: {
-    fontSize: 18,
-    color: '#4A5568',
-    textAlign: 'center',
-    marginBottom: 24,
-  },
-  description: {
-    fontSize: 16,
-    color: '#718096',
-    textAlign: 'center',
-    marginBottom: 32,
-    lineHeight: 24,
-  },
-  button: {
-    backgroundColor: '#0064FF',
-    paddingVertical: 12,
-    paddingHorizontal: 32,
-    borderRadius: 8,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
-  },
-  buttonText: {
-    color: 'white',
-    fontSize: 16,
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-  codeContainer: {
-    padding: 8,
-    backgroundColor: '#333',
-    borderRadius: 4,
-    width: '100%',
-  },
-  code: {
-    color: 'white',
-    fontFamily: 'monospace',
-    letterSpacing: 0.5,
-    fontSize: 14,
-  },
-});
