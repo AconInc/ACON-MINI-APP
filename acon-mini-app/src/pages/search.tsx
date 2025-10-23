@@ -14,6 +14,7 @@ import {
 import { createRoute } from '@granite-js/react-native';
 import { Icon, Button, colors } from '@toss/tds-react-native';
 import { useSafeAreaInsets } from '@granite-js/native/react-native-safe-area-context';
+import { usePlaceholderAnimation } from 'hooks/usePlaceHolderAnimation';
 
 import SearchInput from '../components/searchInput';
 
@@ -29,66 +30,18 @@ function Search() {
     '조용한 공부 카페 알려줘',
   ];
 
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [nextIndex, setNextIndex] = useState(1);
-  const [value, setValue] = useState('');
-
   // 🔹 애니메이션 값 (현재 / 다음)
-  const currentOpacity = useRef(new Animated.Value(1)).current;
-  const currentY = useRef(new Animated.Value(0)).current;
+  const [value, setValue] = useState('');
+  const { currentIndex, currentOpacity, currentY } = usePlaceholderAnimation({
+    placeholders,
+    value,
+  });
 
   // For keyboard-aware button
   const insets = useSafeAreaInsets();
   const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
   const keyboardHeightRef = useRef(0);
   const buttonBottom = useRef(new Animated.Value(0)).current;
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if (value.trim() !== '') return; // 입력 중엔 placeholder 유지
-
-      // 1️⃣ 현재 placeholder 위로 사라짐
-      Animated.parallel([
-        Animated.timing(currentOpacity, {
-          toValue: 0,
-          duration: 300,
-          easing: Easing.out(Easing.ease),
-          useNativeDriver: true,
-        }),
-        Animated.timing(currentY, {
-          toValue: -15,
-          duration: 300,
-          easing: Easing.out(Easing.ease),
-          useNativeDriver: true,
-        }),
-      ]).start(() => {
-        // 2️⃣ 다음 placeholder 아래에서 올라옴
-        setCurrentIndex((prev) => nextIndex);
-        const newNext = (nextIndex + 1) % placeholders.length;
-        setNextIndex(newNext);
-
-        currentOpacity.setValue(0);
-        currentY.setValue(15);
-
-        Animated.parallel([
-          Animated.timing(currentOpacity, {
-            toValue: 1,
-            duration: 300,
-            easing: Easing.out(Easing.ease),
-            useNativeDriver: true,
-          }),
-          Animated.timing(currentY, {
-            toValue: 0,
-            duration: 300,
-            easing: Easing.out(Easing.ease),
-            useNativeDriver: true,
-          }),
-        ]).start();
-      });
-    }, 2000);
-
-    return () => clearInterval(interval);
-  }, [value, nextIndex]);
 
   // Keyboard listeners
   useEffect(() => {
