@@ -1,7 +1,21 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { SafeAreaView, Text, StyleSheet, TextInput, View, Animated, Easing, Alert } from 'react-native';
+import {
+  SafeAreaView,
+  Text,
+  StyleSheet,
+  TextInput,
+  View,
+  Animated,
+  Easing,
+  Alert,
+  Keyboard,
+  Platform,
+} from 'react-native';
 import { createRoute } from '@granite-js/react-native';
 import { Icon, Button, colors } from '@toss/tds-react-native';
+import { useSafeAreaInsets } from '@granite-js/native/react-native-safe-area-context';
+
+import SearchInput from '../components/searchInput';
 
 export const Route = createRoute('/search', {
   validateParams: (params) => params,
@@ -22,6 +36,12 @@ function Search() {
   // 🔹 애니메이션 값 (현재 / 다음)
   const currentOpacity = useRef(new Animated.Value(1)).current;
   const currentY = useRef(new Animated.Value(0)).current;
+
+  // For keyboard-aware button
+  const insets = useSafeAreaInsets();
+  const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
+  const keyboardHeightRef = useRef(0);
+  const buttonBottom = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -70,6 +90,39 @@ function Search() {
     return () => clearInterval(interval);
   }, [value, nextIndex]);
 
+  // Keyboard listeners
+  useEffect(() => {
+    const showEvent = Platform.OS === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow';
+    const hideEvent = Platform.OS === 'ios' ? 'keyboardWillHide' : 'keyboardDidHide';
+
+    const onShow = (e: any) => {
+      const h = e?.endCoordinates?.height ?? 300; // fallback
+      keyboardHeightRef.current = h;
+      setIsKeyboardVisible(true);
+      Animated.timing(buttonBottom, {
+        toValue: h - insets.bottom, // bottom distance relative to safe area
+        duration: 250,
+        useNativeDriver: false,
+      }).start();
+    };
+
+    const onHide = () => {
+      keyboardHeightRef.current = 0;
+      Animated.timing(buttonBottom, {
+        toValue: 0,
+        duration: 200,
+        useNativeDriver: false,
+      }).start(() => setIsKeyboardVisible(false));
+    };
+
+    const subShow = Keyboard.addListener(showEvent, onShow);
+    const subHide = Keyboard.addListener(hideEvent, onHide);
+    return () => {
+      subShow.remove();
+      subHide.remove();
+    };
+  }, [buttonBottom, insets.bottom]);
+
   // 🔹 API POST 구조
   const handleNext = async () => {
     if (!value.trim()) {
@@ -111,10 +164,25 @@ function Search() {
       />
 
       {/* Animated button container: 평소엔 bottom: 0 (safe area 안쪽), 키보드가 있으면 keyboard 바로 위 */}
-        {/* Animated placeholder overlay */}
-      <Button display="block" viewStyle={styles.nextButton} onPress={handleNext}>
-        다음
-      </Button>
+      <Animated.View
+        style={[
+          styles.buttonContainer,
+          {
+            // when no keyboard, bottom is 0 -> attached to screen bottom (safe area respected via padding)
+            bottom: buttonBottom,
+            paddingHorizontal: isKeyboardVisible ? 0 : 20,
+          },
+        ]}
+        pointerEvents="box-none"
+      >
+        <Button
+          display={isKeyboardVisible ? 'full' : 'block'}
+          viewStyle={isKeyboardVisible ? styles.buttonFull : styles.buttonBlock}
+          onPress={handleNext}
+        >
+          다음
+        </Button>
+      </Animated.View>
     </SafeAreaView>
   );
 }
@@ -163,6 +231,24 @@ const styles = StyleSheet.create({
   nextButton: {
     paddingBottom: 24,
     marginHorizontal: 20,
+  },
+  // 버튼 컨테이너 (절대 위치로 bottom 조정)
+  buttonContainer: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    // bottom will be animated by buttonBottom
+    paddingBottom: 12, // safe area 만큼 여유를 주기 위해
+  },
+  // Button style when display="block" (normal)
+  buttonBlock: {
+    marginHorizontal: 20,
+    paddingVertical: 12,
+  },
+  // Button style when keyboard visible (display="full")
+  buttonFull: {
+    marginHorizontal: 0,
+    paddingVertical: 12,
   },
 });
 
