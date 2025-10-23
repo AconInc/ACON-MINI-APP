@@ -15,6 +15,7 @@ import { createRoute } from '@granite-js/react-native';
 import { Icon, Button, colors } from '@toss/tds-react-native';
 import { useSafeAreaInsets } from '@granite-js/native/react-native-safe-area-context';
 import { usePlaceholderAnimation } from 'hooks/usePlaceHolderAnimation';
+import { useKeyboardAnimation } from 'hooks/useKeyboardAnimation';
 
 import SearchInput from '../components/searchInput';
 
@@ -30,51 +31,16 @@ function Search() {
     '조용한 공부 카페 알려줘',
   ];
 
-  // 🔹 애니메이션 값 (현재 / 다음)
+  // 🔹 Placeholder 애니메이션 값
   const [value, setValue] = useState('');
   const { currentIndex, currentOpacity, currentY } = usePlaceholderAnimation({
     placeholders,
     value,
   });
 
-  // For keyboard-aware button
+  // 🔹 다음 버튼 bottom (keyboard-aware 애니메이션)
   const insets = useSafeAreaInsets();
-  const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
-  const keyboardHeightRef = useRef(0);
-  const buttonBottom = useRef(new Animated.Value(0)).current;
-
-  // Keyboard listeners
-  useEffect(() => {
-    const showEvent = Platform.OS === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow';
-    const hideEvent = Platform.OS === 'ios' ? 'keyboardWillHide' : 'keyboardDidHide';
-
-    const onShow = (e: any) => {
-      const h = e?.endCoordinates?.height ?? 300; // fallback
-      keyboardHeightRef.current = h;
-      setIsKeyboardVisible(true);
-      Animated.timing(buttonBottom, {
-        toValue: h - insets.bottom, // bottom distance relative to safe area
-        duration: 250,
-        useNativeDriver: false,
-      }).start();
-    };
-
-    const onHide = () => {
-      keyboardHeightRef.current = 0;
-      Animated.timing(buttonBottom, {
-        toValue: 0,
-        duration: 200,
-        useNativeDriver: false,
-      }).start(() => setIsKeyboardVisible(false));
-    };
-
-    const subShow = Keyboard.addListener(showEvent, onShow);
-    const subHide = Keyboard.addListener(hideEvent, onHide);
-    return () => {
-      subShow.remove();
-      subHide.remove();
-    };
-  }, [buttonBottom, insets.bottom]);
+  const { isKeyboardVisible, buttonBottom } = useKeyboardAnimation(insets.bottom);
 
   // 🔹 API POST 구조
   const handleNext = async () => {
@@ -118,14 +84,7 @@ function Search() {
 
       {/* Animated button container: 평소엔 bottom: 0 (safe area 안쪽), 키보드가 있으면 keyboard 바로 위 */}
       <Animated.View
-        style={[
-          styles.buttonContainer,
-          {
-            // when no keyboard, bottom is 0 -> attached to screen bottom (safe area respected via padding)
-            bottom: buttonBottom,
-            paddingHorizontal: isKeyboardVisible ? 0 : 20,
-          },
-        ]}
+        style={[styles.buttonContainer, { bottom: buttonBottom, paddingHorizontal: isKeyboardVisible ? 0 : 20 }]}
         pointerEvents="box-none"
       >
         <Button
