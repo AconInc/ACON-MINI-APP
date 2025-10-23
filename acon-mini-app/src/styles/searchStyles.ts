@@ -5,14 +5,10 @@ export const searchStyles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
   },
-  title: {
-    fontSize: 24,
-    lineHeight: 34,
+  titleView: {
     marginHorizontal: 24,
     marginTop: 24,
-    fontWeight: 'bold',
-    color: '#111',
-    textAlign: 'left',
+    marginBottom: 32
   },
   buttonContainer: {
     position: 'absolute',

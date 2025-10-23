@@ -1,24 +1,13 @@
-import React, { useEffect, useRef, useState } from 'react';
-import {
-  SafeAreaView,
-  Text,
-  StyleSheet,
-  TextInput,
-  View,
-  Animated,
-  Easing,
-  Alert,
-  Keyboard,
-  Platform,
-} from 'react-native';
+import React, { useState } from 'react';
+import { SafeAreaView, Animated, View } from 'react-native';
 import { createRoute } from '@granite-js/react-native';
-import { Icon, Button, colors } from '@toss/tds-react-native';
+import { Button, Text } from '@toss/tds-react-native';
 import { useSafeAreaInsets } from '@granite-js/native/react-native-safe-area-context';
+
 import { usePlaceholderAnimation } from 'hooks/usePlaceHolderAnimation';
 import { useKeyboardAnimation } from 'hooks/useKeyboardAnimation';
 import { postSearch } from 'api/search';
 import { searchStyles as styles } from 'styles/searchStyles';
-
 import SearchInput from '../components/searchInput';
 
 export const Route = createRoute('/search', {
@@ -49,7 +38,11 @@ function Search() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.title}>{`No more Research,\nAcon`}</Text>
+      <View style={styles.titleView}>
+        <Text typography="st5" fontWeight="bold" color='#111'>
+          {`No more Research,\nAcon`}
+        </Text>
+      </View>
 
       <SearchInput
         value={value}
