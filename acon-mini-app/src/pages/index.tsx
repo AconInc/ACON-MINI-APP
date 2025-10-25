@@ -59,12 +59,13 @@ function Page() {
         placeholders={placeholders}
       />
 
-      {/* Animated button container: 평소엔 bottom: 0 (safe area 안쪽), 키보드가 있으면 keyboard 바로 위 */}
+      {/* Animated button container*/}
       <Animated.View style={[styles.buttonContainer, { bottom: buttonBottom }]} pointerEvents="box-none">
         <Button
           display={isKeyboardVisible ? 'full' : 'block'}
           viewStyle={isKeyboardVisible ? styles.buttonFull : styles.buttonBlock}
           onPress={handleNext}
+          disabled={!value.trim()}
         >
           다음
         </Button>
