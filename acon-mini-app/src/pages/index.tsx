@@ -29,15 +29,21 @@ function Page() {
     value,
   });
 
-  // 🔹 다음 버튼 bottom (keyboard-aware 애니메이션)
+  // 🔹 다음 버튼 애니메이션 (keyboard-aware 애니메이션)
   const insets = useSafeAreaInsets();
   const { isKeyboardVisible, buttonBottom } = useKeyboardAnimation(insets.bottom);
 
-  // 🔹 다음 버튼 network
-  const { handleNext } = postSearch();
+  // 🔹 다음 버튼 action: 비동기로 postSearch 요청보내고 shake-ad로 네비게이션
+  const navigation = Route.useNavigation();
+
+  const handleNext = async () => {
+    const { handleNext: postSearchHandleNext } = postSearch();
+    await postSearchHandleNext(value);
+    navigation.navigate('/shake-ad');
+  };
 
   return (
-    <View style={[styles.container, {marginBottom: insets.bottom}]}>
+    <View style={[styles.container, { marginBottom: insets.bottom }]}>
       <View style={styles.titleView}>
         <Text typography="st5" fontWeight="bold" color="#111">
           {`No more Research,\nAcon`}
@@ -58,7 +64,7 @@ function Page() {
         <Button
           display={isKeyboardVisible ? 'full' : 'block'}
           viewStyle={isKeyboardVisible ? styles.buttonFull : styles.buttonBlock}
-          onPress={() => handleNext(value)}
+          onPress={handleNext}
         >
           다음
         </Button>
