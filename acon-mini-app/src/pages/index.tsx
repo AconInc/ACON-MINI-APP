@@ -10,18 +10,13 @@ import { useKeyboardAnimation } from 'hooks/useKeyboardAnimation';
 import { searchStyles as styles } from 'styles/searchStyles';
 import { postSearch } from 'api/search';
 import SearchInput from '../components/searchInput';
+import { placeholders } from 'literals/search';
 
 export const Route = createRoute('/', {
   component: Page,
 });
 
 function Page() {
-  const placeholders = [
-    '카공하기 좋은 판교역 카페 추천해줘',
-    '요즘 인기 있는 루프탑 카페 찾아줘',
-    '조용한 공부 카페 알려줘',
-  ];
-
   // 🔹 Placeholder 애니메이션 값
   const [value, setValue] = useState('');
   const { currentIndex, currentOpacity, currentY } = usePlaceholderAnimation({
