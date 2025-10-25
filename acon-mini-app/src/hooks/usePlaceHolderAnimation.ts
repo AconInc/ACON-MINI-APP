@@ -1,18 +1,30 @@
 import { useEffect, useRef, useState } from 'react';
 import { Animated, Easing } from 'react-native';
 
-export const usePlaceholderAnimation = ({
-  placeholders,
-  value,
-}: {
-  placeholders: string[];
-  value: string;
-}) => {
+export const usePlaceholderAnimation = ({ placeholders, value }: { placeholders: string[]; value: string }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [nextIndex, setNextIndex] = useState(1);
   const currentOpacity = useRef(new Animated.Value(1)).current;
   const currentY = useRef(new Animated.Value(0)).current;
 
+  // ✅ 입력값 없을 때 placeholder fade-in 애니메이션
+  useEffect(() => {
+    if (value.trim() === '') {
+      // 초기 위치와 투명도 설정
+      currentOpacity.setValue(0);
+      currentY.setValue(0);
+
+      // 서서히 fade-in
+      Animated.timing(currentOpacity, {
+        toValue: 1,
+        duration: 300,
+        easing: Easing.out(Easing.ease),
+        useNativeDriver: true,
+      }).start();
+    }
+  }, [value, currentOpacity, currentY]);
+
+  // ✅ placeholder 순환 애니메이션
   useEffect(() => {
     const interval = setInterval(() => {
       if (value.trim() !== '') return;
