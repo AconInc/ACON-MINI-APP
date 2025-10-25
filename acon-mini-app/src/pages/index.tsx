@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Animated, View } from 'react-native';
+import { Animated, Keyboard, TouchableWithoutFeedback, View } from 'react-native';
 
 import { createRoute } from '@granite-js/react-native';
 import { Button, Text } from '@toss/tds-react-native';
@@ -38,33 +38,35 @@ function Page() {
   };
 
   return (
-    <View style={[styles.container, { marginBottom: insets.bottom }]}>
-      <View style={styles.titleView}>
-        <Text typography="st5" fontWeight="bold" color="#111">
-          {`No more Research,\nAcon`}
-        </Text>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+      <View style={[styles.container, { marginBottom: insets.bottom }]}>
+        <View style={styles.titleView}>
+          <Text typography="st5" fontWeight="bold" color="#111">
+            {`No more Research,\nAcon`}
+          </Text>
+        </View>
+
+        <SearchInput
+          value={value}
+          onChangeText={setValue}
+          currentIndex={currentIndex}
+          currentOpacity={currentOpacity}
+          currentY={currentY}
+          placeholders={placeholders}
+        />
+
+        {/* Animated button container*/}
+        <Animated.View style={[styles.buttonContainer, { bottom: buttonBottom }]} pointerEvents="box-none">
+          <Button
+            display={isKeyboardVisible ? 'full' : 'block'}
+            viewStyle={isKeyboardVisible ? styles.buttonFull : styles.buttonBlock}
+            onPress={handleNext}
+            disabled={!value.trim()}
+          >
+            다음
+          </Button>
+        </Animated.View>
       </View>
-
-      <SearchInput
-        value={value}
-        onChangeText={setValue}
-        currentIndex={currentIndex}
-        currentOpacity={currentOpacity}
-        currentY={currentY}
-        placeholders={placeholders}
-      />
-
-      {/* Animated button container*/}
-      <Animated.View style={[styles.buttonContainer, { bottom: buttonBottom }]} pointerEvents="box-none">
-        <Button
-          display={isKeyboardVisible ? 'full' : 'block'}
-          viewStyle={isKeyboardVisible ? styles.buttonFull : styles.buttonBlock}
-          onPress={handleNext}
-          disabled={!value.trim()}
-        >
-          다음
-        </Button>
-      </Animated.View>
-    </View>
+    </TouchableWithoutFeedback>
   );
 }
