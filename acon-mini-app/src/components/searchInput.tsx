@@ -33,10 +33,7 @@ export default function SearchInput({
       {value === '' && (
         <View style={StyleSheet.absoluteFill} pointerEvents="none">
           <Animated.Text
-            style={[
-              styles.placeholder,
-              { opacity: currentOpacity, transform: [{ translateY: currentY }] },
-            ]}
+            style={[styles.placeholder, { opacity: currentOpacity, transform: [{ translateY: currentY }] }]}
           >
             {placeholders[currentIndex]}
           </Animated.Text>
@@ -63,6 +60,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginLeft: 10,
     color: colors.grey800,
+    padding: 0,
+    textAlignVertical: 'center',
   },
   placeholder: {
     position: 'absolute',
@@ -70,5 +69,6 @@ const styles = StyleSheet.create({
     left: 42,
     top: 12,
     fontSize: 16,
+    lineHeight: 20,
   },
 });
