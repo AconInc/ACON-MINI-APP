@@ -68,7 +68,7 @@ export const usePlaceholderAnimation = ({ placeholders, value }: { placeholders:
     }, 2000);
 
     return () => clearInterval(interval);
-  }, [value, nextIndex]);
+  }, [value, nextIndex, currentOpacity, currentY, placeholders]);
 
   return { currentIndex, currentOpacity, currentY };
 };

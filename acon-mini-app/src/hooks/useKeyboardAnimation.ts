@@ -11,7 +11,7 @@ export const useKeyboardAnimation = (safeBottom: number) => {
 
     const onShow = (e: any) => {
       const h = e?.endCoordinates?.height ?? 300;
-        const bottomOffset = Platform.OS === 'ios' ? Math.max(h - safeBottom, 0) : 0;
+      const bottomOffset = Platform.OS === 'ios' ? Math.max(h - safeBottom, 0) : 0;
 
       setIsKeyboardVisible(true);
       Animated.timing(buttonBottom, {
@@ -35,7 +35,7 @@ export const useKeyboardAnimation = (safeBottom: number) => {
       subShow.remove();
       subHide.remove();
     };
-  }, [safeBottom]);
+  }, [safeBottom, buttonBottom]);
 
   return { isKeyboardVisible, buttonBottom };
 };
