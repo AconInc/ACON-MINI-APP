@@ -11,10 +11,11 @@ export const useKeyboardAnimation = (safeBottom: number) => {
 
     const onShow = (e: any) => {
       const h = e?.endCoordinates?.height ?? 300;
+        const bottomOffset = Platform.OS === 'ios' ? Math.max(h - safeBottom, 0) : 0;
 
       setIsKeyboardVisible(true);
       Animated.timing(buttonBottom, {
-        toValue: Math.max(h - safeBottom, 0),
+        toValue: bottomOffset,
         duration: 250,
         useNativeDriver: false,
       }).start();
