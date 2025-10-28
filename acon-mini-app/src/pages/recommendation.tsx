@@ -2,15 +2,15 @@ import React from 'react';
 import { Text, View } from 'react-native';
 import { createRoute } from '@granite-js/react-native';
 
-export const Route = createRoute('/shake-ad', {
+export const Route = createRoute('/recommendation', {
   validateParams: (params) => params,
-  component: ShakeAd,
+  component: Recommendation,
 });
 
-function ShakeAd() {
+function Recommendation() {
   return (
     <View>
-      <Text>Hello ShakeAd</Text>
+      <Text>Hello Recommendation</Text>
     </View>
   );
 }

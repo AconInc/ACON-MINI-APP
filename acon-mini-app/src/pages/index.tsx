@@ -36,7 +36,7 @@ function Page() {
   const handleNext = async () => {
     const { handleNext: postSearchHandleNext } = postSearch();
     await postSearchHandleNext(value);
-    navigation.navigate('/shake-ad');
+    navigation.navigate('/watch-ad');
   };
 
   return (
@@ -44,7 +44,7 @@ function Page() {
       <View style={[styles.container]}>
         <ScrollView>
           <View style={styles.titleView}>
-            <Text typography="st5" fontWeight="bold" color="#111">
+            <Text typography="st5" fontWeight="semibold" color="#111">
               {`No more Research,\nAcon`}
             </Text>
           </View>
