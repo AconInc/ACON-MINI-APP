@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Keyboard, Platform, ScrollView, TouchableWithoutFeedback, View } from 'react-native';
+import { Keyboard, ScrollView, TouchableWithoutFeedback, View } from 'react-native';
 
+import { getPlatformOS } from '@apps-in-toss/framework';
 import { createRoute, KeyboardAboveView } from '@granite-js/react-native';
 import { Button, Text } from '@toss/tds-react-native';
 import { useSafeAreaInsets } from '@granite-js/native/react-native-safe-area-context';
@@ -24,10 +25,10 @@ function Page() {
     value,
   });
 
-  // 🔹 다음 버튼 애니메이션 (keyboard-aware 애니메이션)
+  // 🔹 다음 버튼 UI (keyboard-aware 애니메이션)
   const insets = useSafeAreaInsets();
   const { isKeyboardVisible } = useKeyboardVisibility();
-  const isKeyboardHiddenAndiOS = !isKeyboardVisible && Platform.OS === 'ios';
+  const isKeyboardHiddenAndiOS = !isKeyboardVisible && getPlatformOS() === 'ios';
 
   // 🔹 다음 버튼 action: 비동기로 postSearch 요청보내고 shake-ad로 네비게이션
   const navigation = Route.useNavigation();

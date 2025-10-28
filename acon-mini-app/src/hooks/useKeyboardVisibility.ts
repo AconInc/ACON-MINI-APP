@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react';
 import { Keyboard, Platform } from 'react-native';
 
+import { getPlatformOS } from '@apps-in-toss/framework';
+
 export const useKeyboardVisibility = () => {
   const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
 
   useEffect(() => {
-    const showEvent = Platform.OS === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow';
-    const hideEvent = Platform.OS === 'ios' ? 'keyboardWillHide' : 'keyboardDidHide';
+    const showEvent = getPlatformOS() === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow';
+    const hideEvent = getPlatformOS() === 'ios' ? 'keyboardWillHide' : 'keyboardDidHide';
 
     const onShow = () => {
       setIsKeyboardVisible(true);
