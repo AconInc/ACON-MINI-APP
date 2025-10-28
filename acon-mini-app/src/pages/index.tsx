@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { Animated, Keyboard, TouchableWithoutFeedback, View } from 'react-native';
+import { Keyboard, Platform, ScrollView, TouchableWithoutFeedback, View } from 'react-native';
 
-import { createRoute } from '@granite-js/react-native';
+import { createRoute, KeyboardAboveView } from '@granite-js/react-native';
 import { Button, Text } from '@toss/tds-react-native';
 import { useSafeAreaInsets } from '@granite-js/native/react-native-safe-area-context';
 
 import { usePlaceholderAnimation } from 'hooks/usePlaceHolderAnimation';
-import { useKeyboardAnimation } from 'hooks/useKeyboardAnimation';
+import { useKeyboardVisibility } from 'hooks/useKeyboardVisibility';
 import { searchStyles as styles } from 'styles/searchStyles';
 import { postSearch } from 'api/search';
 import SearchInput from '../components/searchInput';
@@ -26,7 +26,8 @@ function Page() {
 
   // 🔹 다음 버튼 애니메이션 (keyboard-aware 애니메이션)
   const insets = useSafeAreaInsets();
-  const { isKeyboardVisible, buttonBottom } = useKeyboardAnimation(insets.bottom);
+  const { isKeyboardVisible } = useKeyboardVisibility();
+  const isKeyboardHiddenAndiOS = !isKeyboardVisible && Platform.OS === 'ios';
 
   // 🔹 다음 버튼 action: 비동기로 postSearch 요청보내고 shake-ad로 네비게이션
   const navigation = Route.useNavigation();
@@ -39,33 +40,38 @@ function Page() {
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-      <View style={[styles.container, { marginBottom: insets.bottom }]}>
-        <View style={styles.titleView}>
-          <Text typography="st5" fontWeight="bold" color="#111">
-            {`No more Research,\nAcon`}
-          </Text>
-        </View>
+      <View style={[styles.container]}>
+        <ScrollView>
+          <View style={styles.titleView}>
+            <Text typography="st5" fontWeight="bold" color="#111">
+              {`No more Research,\nAcon`}
+            </Text>
+          </View>
 
-        <SearchInput
-          value={value}
-          onChangeText={setValue}
-          currentIndex={currentIndex}
-          currentOpacity={currentOpacity}
-          currentY={currentY}
-          placeholders={placeholders}
-        />
+          <SearchInput
+            value={value}
+            onChangeText={setValue}
+            currentIndex={currentIndex}
+            currentOpacity={currentOpacity}
+            currentY={currentY}
+            placeholders={placeholders}
+          />
+        </ScrollView>
 
-        {/* Animated button container*/}
-        <Animated.View style={[styles.buttonContainer, { bottom: buttonBottom }]} pointerEvents="box-none">
+        {/* Next button container */}
+        <KeyboardAboveView>
           <Button
             display={isKeyboardVisible ? 'full' : 'block'}
-            viewStyle={isKeyboardVisible ? styles.buttonFull : styles.buttonBlock}
+            viewStyle={[
+              isKeyboardVisible ? styles.buttonFull : styles.buttonBlock,
+              { marginBottom: isKeyboardHiddenAndiOS ? insets.bottom : 0 },
+            ]}
             onPress={handleNext}
             disabled={!value.trim()}
           >
             다음
           </Button>
-        </Animated.View>
+        </KeyboardAboveView>
       </View>
     </TouchableWithoutFeedback>
   );
