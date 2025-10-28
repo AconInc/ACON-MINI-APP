@@ -7,7 +7,7 @@ import { useSafeAreaInsets } from '@granite-js/native/react-native-safe-area-con
 
 import { usePlaceholderAnimation } from 'hooks/usePlaceHolderAnimation';
 import { useKeyboardVisibility } from 'hooks/useKeyboardVisibility';
-import { searchStyles as styles } from 'styles/searchStyles';
+import { globalStyles as styles } from 'styles/styles';
 import { postSearch } from 'api/search';
 import SearchInput from '../components/searchInput';
 import { placeholders } from 'literals/search';
