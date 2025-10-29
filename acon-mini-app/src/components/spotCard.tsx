@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, ImageBackground, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
+import { View, ImageBackground } from 'react-native';
+
 import { Text } from '@toss/tds-react-native';
 import { LinearGradient } from '@toss/tds-react-native';
 
@@ -10,10 +11,9 @@ interface PlaceCardProps {
   hours: string;
   isOpen: boolean;
   imageUrl: string;
-  onPress?: () => void;
 }
 
-const PlaceCard: React.FC<PlaceCardProps> = ({ name, hours, imageUrl, isOpen, onPress }) => {
+const PlaceCard: React.FC<PlaceCardProps> = ({ name, hours, imageUrl, isOpen }) => {
   return (
     <View style={styles.card}>
       <ImageBackground source={{ uri: imageUrl }} style={styles.image} imageStyle={styles.imageStyle}>

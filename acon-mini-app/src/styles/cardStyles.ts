@@ -1,5 +1,4 @@
 import { Dimensions, StyleSheet } from 'react-native';
-import { colors } from '@toss/tds-react-native';
 
 // MARK: - Properties
 const { height: screenHeight } = Dimensions.get('window');
