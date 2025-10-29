@@ -43,7 +43,7 @@ function Page() {
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <View style={[styles.container]}>
         <ScrollView>
-          <View style={styles.titleView}>
+          <View style={[styles.titleView, { marginBottom: 32 }]}>
             <Text typography="st5" fontWeight="semibold" color="#111">
               {`No more Research,\nAcon`}
             </Text>

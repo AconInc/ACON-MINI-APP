@@ -1,6 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { colors } from '@toss/tds-react-native';
 
+// MARK: - Styles
 export const globalStyles = StyleSheet.create({
   container: {
     flex: 1,
@@ -9,7 +10,6 @@ export const globalStyles = StyleSheet.create({
   titleView: {
     marginHorizontal: 24,
     marginTop: 24,
-    marginBottom: 32,
   },
   buttonBlock: {
     marginHorizontal: 20,
@@ -18,7 +18,6 @@ export const globalStyles = StyleSheet.create({
     marginHorizontal: 0,
   },
 });
-
 
 export const shakeStyles = StyleSheet.create({
   bubbleContainer: {
@@ -32,5 +31,5 @@ export const shakeStyles = StyleSheet.create({
 
   imageContainer: {
     alignSelf: 'center',
-  }
+  },
 });
