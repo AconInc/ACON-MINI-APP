@@ -17,11 +17,11 @@ export const postSearch = () => {
       if (!response.ok) throw new Error('서버 오류');
       const result = await response.json();
 
-      Alert.alert('성공', '검색 요청이 전송되었습니다!');
-      console.log('검색 결과:', result);
+      // Alert.alert('성공', '검색 요청이 전송되었습니다!');
+      // console.log('검색 결과:', result);
     } catch (error) {
-      console.error(error);
-      Alert.alert('오류', '검색 요청 중 문제가 발생했습니다.');
+      // console.error(error);
+      // Alert.alert('오류', '검색 요청 중 문제가 발생했습니다.');
     }
   };
 
