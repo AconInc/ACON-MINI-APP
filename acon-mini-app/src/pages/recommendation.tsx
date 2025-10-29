@@ -9,6 +9,7 @@ import { globalStyles } from 'styles/globalStyles';
 import { recommendationStyles as styles } from 'styles/recommendationStyles';
 
 import PlaceCard from 'components/spotCard';
+import { LOTTIES } from 'constants/assets';
 
 export const Route = createRoute('/recommendation', {
   validateParams: (params) => params,
@@ -33,7 +34,12 @@ function Recommendation() {
           </Text>
         </View>
 
-        <PlaceCard name="장소명장소명장소명장소명소명장소명장소명" hours="21:00" isOpen={true} imageUrl="https://picsum.photos/200"/>
+        <PlaceCard
+          name="장소명장소명장소명장소명소명장소명장소명"
+          hours="21:00"
+          isOpen={true}
+          imageUrl={LOTTIES.DropAcorn}
+        />
       </ScrollView>
 
       {/* Next button container */}
