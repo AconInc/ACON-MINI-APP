@@ -1,6 +1,14 @@
 import React from 'react';
-import { Text, View } from 'react-native';
+import { ScrollView, TouchableOpacity, View } from 'react-native';
+
 import { createRoute } from '@granite-js/react-native';
+import { Text } from '@toss/tds-react-native';
+import { useSafeAreaInsets } from '@granite-js/native/react-native-safe-area-context';
+
+import { globalStyles } from 'styles/styles';
+import { recommendationStyles as styles } from 'styles/recommendationStyles';
+
+import PlaceCard from 'components/spotCard';
 
 export const Route = createRoute('/recommendation', {
   validateParams: (params) => params,
@@ -8,9 +16,36 @@ export const Route = createRoute('/recommendation', {
 });
 
 function Recommendation() {
+  const insets = useSafeAreaInsets();
+
+  // 🔹 다음 버튼 action
+  const navigation = Route.useNavigation();
+  const handleNext = async () => {
+    navigation.navigate('/');
+  };
+
   return (
-    <View>
-      <Text>Hello Recommendation</Text>
+    <View style={[globalStyles.container]}>
+      <ScrollView>
+        <View style={[globalStyles.titleView, { marginBottom: 40 }]}>
+          <Text typography="st5" fontWeight="semibold" color="#111" textAlign="center">
+            여기는 어떠세요?
+          </Text>
+        </View>
+
+        <PlaceCard name="Sample Place" hours="Open 9 AM - 9 PM" isOpen={true} imageUrl="https://picsum.photos/200" />
+      </ScrollView>
+
+      {/* Next button container */}
+      <TouchableOpacity
+        onPress={handleNext}
+        activeOpacity={0.9}
+        style={[styles.againContainer, { marginBottom: insets.bottom }]}
+      >
+        <Text typography="t5" fontWeight="semibold" color="#fff" textAlign="center">
+          다시 추천받기
+        </Text>
+      </TouchableOpacity>
     </View>
   );
 }
