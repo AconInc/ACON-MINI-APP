@@ -33,7 +33,7 @@ function Recommendation() {
           </Text>
         </View>
 
-        <PlaceCard name="Sample Place" hours="Open 9 AM - 9 PM" isOpen={true} imageUrl="https://picsum.photos/200" />
+        <PlaceCard name="장소명장소명장소명장소명소명장소명장소명" hours="21:00" isOpen={true} imageUrl="https://picsum.photos/200"/>
       </ScrollView>
 
       {/* Next button container */}

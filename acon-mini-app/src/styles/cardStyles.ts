@@ -30,6 +30,7 @@ export const cardStyles = StyleSheet.create({
     position: 'absolute',
     top: 20,
     left: 20,
+    right: 20,
   },
   openTimeContainer: {
     marginTop: 4,

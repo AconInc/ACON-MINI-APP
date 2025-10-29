@@ -39,7 +39,7 @@ const PlaceCard: React.FC<PlaceCardProps> = ({ name, hours, imageUrl, isOpen }) 
 
         {/* 텍스트 오버레이 */}
         <View style={styles.textContainer}>
-          <Text typography="st8" fontWeight="semibold" color="rgba(255, 255, 255, 1)" textAlign="left">
+          <Text typography="st8" fontWeight="semibold" color="rgba(255, 255, 255, 1)" textAlign="left" numberOfLines={1}>
             {name}
           </Text>
 
