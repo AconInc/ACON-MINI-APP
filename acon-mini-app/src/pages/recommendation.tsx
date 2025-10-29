@@ -19,7 +19,7 @@ export const Route = createRoute('/recommendation', {
 function Recommendation() {
   const insets = useSafeAreaInsets();
 
-  // 🔹 다음 버튼 action
+  // 🔹 '다시 추천받기' 버튼 action
   const navigation = Route.useNavigation();
   const handleNext = async () => {
     navigation.navigate('/');
