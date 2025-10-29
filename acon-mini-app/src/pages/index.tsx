@@ -8,7 +8,7 @@ import { useSafeAreaInsets } from '@granite-js/native/react-native-safe-area-con
 
 import { usePlaceholderAnimation } from 'hooks/usePlaceHolderAnimation';
 import { useKeyboardVisibility } from 'hooks/useKeyboardVisibility';
-import { globalStyles as styles } from 'styles/styles';
+import { globalStyles } from 'styles/globalStyles';
 import { postSearch } from 'api/search';
 import SearchInput from '../components/searchInput';
 import { placeholders } from 'literals/search';
@@ -41,9 +41,9 @@ function Page() {
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-      <View style={[styles.container]}>
+      <View style={[globalStyles.container]}>
         <ScrollView>
-          <View style={[styles.titleView, { marginBottom: 32 }]}>
+          <View style={[globalStyles.titleView, { marginBottom: 32 }]}>
             <Text typography="st5" fontWeight="semibold" color="#111">
               {`No more Research,\nAcon`}
             </Text>
@@ -64,7 +64,7 @@ function Page() {
           <Button
             display={isKeyboardVisible ? 'full' : 'block'}
             viewStyle={[
-              isKeyboardVisible ? styles.buttonFull : styles.buttonBlock,
+              isKeyboardVisible ? globalStyles.buttonFull : globalStyles.buttonBlock,
               { marginBottom: isKeyboardHiddenAndiOS ? insets.bottom : 0 },
             ]}
             onPress={handleNext}

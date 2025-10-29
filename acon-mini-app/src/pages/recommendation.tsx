@@ -5,7 +5,7 @@ import { createRoute } from '@granite-js/react-native';
 import { Text } from '@toss/tds-react-native';
 import { useSafeAreaInsets } from '@granite-js/native/react-native-safe-area-context';
 
-import { globalStyles } from 'styles/styles';
+import { globalStyles } from 'styles/globalStyles';
 import { recommendationStyles as styles } from 'styles/recommendationStyles';
 
 import PlaceCard from 'components/spotCard';

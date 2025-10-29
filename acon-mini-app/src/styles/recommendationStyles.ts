@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+
 import { colors } from '@toss/tds-react-native';
 
 export const recommendationStyles = StyleSheet.create({
