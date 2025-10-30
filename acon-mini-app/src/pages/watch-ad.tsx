@@ -2,12 +2,11 @@ import React from 'react';
 import { View } from 'react-native';
 
 import { createRoute, Lottie } from '@granite-js/react-native';
-import { Button, Text } from '@toss/tds-react-native';
+import { Button, Text, Icon, colors } from '@toss/tds-react-native';
+import { useSafeAreaInsets } from '@granite-js/native/react-native-safe-area-context';
 
 import { globalStyles } from 'styles/globalStyles';
 import { watchAdStyles as styles } from 'styles/watchAdStyles';
-import { useSafeAreaInsets } from '@granite-js/native/react-native-safe-area-context';
-import { Icon, colors } from '@toss/tds-react-native';
 import { LOTTIES } from 'constants/assets';
 
 export const Route = createRoute('/watch-ad', {
