@@ -1,7 +1,8 @@
 import { appsInToss } from '@apps-in-toss/framework/plugins';
 import { defineConfig } from '@granite-js/react-native/config';
-import { router } from "@granite-js/plugin-router";
-import { IMAGES } from 'constants/assets';
+import { router } from '@granite-js/plugin-router';
+
+import { IMAGES } from './src/constants/assets';
 
 export default defineConfig({
   scheme: 'intoss',
