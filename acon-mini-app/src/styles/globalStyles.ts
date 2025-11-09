@@ -17,4 +17,23 @@ export const globalStyles = StyleSheet.create({
   buttonFull: {
     marginHorizontal: 0,
   },
+  greyButtonContainer: {
+    marginHorizontal: 20,
+    backgroundColor: colors.grey700,
+    paddingVertical: 15,
+    borderRadius: 16,
+  },
+  loadingButtonContainer: {
+    marginHorizontal: 20,
+    backgroundColor: colors.grey800,
+    borderRadius: 16,
+    height: 56,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  imageContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 });
