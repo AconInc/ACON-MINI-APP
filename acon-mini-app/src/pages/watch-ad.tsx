@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { View } from 'react-native';
 
-import { createRoute, Lottie } from '@granite-js/react-native';
-import { Button, Text, Icon, colors } from '@toss/tds-react-native';
+import { createRoute } from '@granite-js/react-native';
+import LottieView from '@granite-js/native/lottie-react-native';
 import { useSafeAreaInsets } from '@granite-js/native/react-native-safe-area-context';
+import { Button, Text, Icon, colors } from '@toss/tds-react-native';
+import { generateHapticFeedback } from '@apps-in-toss/framework';
 
 import { globalStyles } from 'styles/globalStyles';
 import { watchAdStyles as styles } from 'styles/watchAdStyles';
@@ -24,6 +26,15 @@ function WatchAd() {
     navigation.navigate('/recommendation');
   };
 
+  const lottieRef = useRef<LottieView>(null);
+
+  useEffect(() => {
+    if (lottieRef.current) {
+      lottieRef.current.play();
+      generateHapticFeedback({ type: 'confetti' });
+    }
+  }, []);
+
   return (
     <View style={[globalStyles.container]}>
       {/* Title */}
@@ -39,12 +50,15 @@ function WatchAd() {
 
       {/* Lottie */}
       <View style={styles.lottieContainer}>
-        <Lottie
-          width={'100%'}
-          height={270}
-          src={LOTTIES.DropAcorn}
-          autoPlay={true}
+        <LottieView
+          ref={lottieRef}
+          source={{ uri: LOTTIES.DropAcorn }}
           loop={false}
+          autoPlay={false}
+          style={{
+            width: 300,
+            height: 270,
+          }}
           onAnimationFailure={() => {
             console.log('Animation Failed');
           }}

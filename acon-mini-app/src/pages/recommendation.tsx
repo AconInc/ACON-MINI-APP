@@ -6,7 +6,6 @@ import { Text } from '@toss/tds-react-native';
 import { useSafeAreaInsets } from '@granite-js/native/react-native-safe-area-context';
 
 import { globalStyles } from 'styles/globalStyles';
-import { recommendationStyles as styles } from 'styles/recommendationStyles';
 
 import PlaceCard from 'components/spotCard';
 import { LOTTIES } from 'constants/assets';
@@ -46,7 +45,7 @@ function Recommendation() {
       <TouchableOpacity
         onPress={handleNext}
         activeOpacity={0.9}
-        style={[styles.againContainer, { marginBottom: insets.bottom }]}
+        style={[globalStyles.greyButtonContainer, { marginBottom: insets.bottom }]}
       >
         <Text typography="t5" fontWeight="semibold" color="#fff" textAlign="center">
           다시 추천받기
