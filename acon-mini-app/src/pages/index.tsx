@@ -9,7 +9,7 @@ import { useSafeAreaInsets } from '@granite-js/native/react-native-safe-area-con
 import { usePlaceholderAnimation } from 'hooks/usePlaceHolderAnimation';
 import { useKeyboardVisibility } from 'hooks/useKeyboardVisibility';
 import { globalStyles } from 'styles/globalStyles';
-import { postSearch } from 'api/search';
+import { usePostSearch } from 'api/search';
 import SearchInput from '../components/searchInput';
 import { placeholders } from 'literals/search';
 
@@ -18,7 +18,7 @@ export const Route = createRoute('/', {
 });
 
 function Page() {
-  const { handleNext: postSearchHandleNext } = postSearch();
+  const { handleNext: postSearchHandleNext } = usePostSearch();
 
   // 🔹 Placeholder 애니메이션 값
   const [value, setValue] = useState('');

@@ -8,8 +8,8 @@ interface SpotData {
 
 interface State {
   spotData: SpotData | null;
-  isLoading: false;
-  error: null;
+  isLoading: boolean;
+  error: string | null;
 }
 interface Actions {
   actions: {
@@ -34,9 +34,7 @@ export const useSpotStore = create<State & Actions>((set) => ({
         return;
       }
       // 일부 상태 초기화
-      keys.forEach((key) => {
-        set({ [key]: initialState[key] });
-      });
+      set(keys.reduce((acc, key) => ({ ...acc, [key]: initialState[key] }), {}));
     },
   },
 }));
