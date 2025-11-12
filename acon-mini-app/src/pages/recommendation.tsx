@@ -25,7 +25,7 @@ function Recommendation() {
   // 🔹 '다시 추천받기' 버튼 action
   const navigation = Route.useNavigation();
   const handleNext = async () => {
-    () => resetState();
+    resetState();
     navigation.navigate('/');
   };
 
