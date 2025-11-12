@@ -13,7 +13,8 @@
     "@granite-js/native": "0.1.28",
     "@granite-js/react-native": "0.1.28",
     "react": "18.2.0",
-    "react-native": "0.72.6"
+    "react-native": "0.72.6",
+    "zustand": "^5.0.8"
   },
   "devDependencies": {
     "@babel/core": "7.23.9",

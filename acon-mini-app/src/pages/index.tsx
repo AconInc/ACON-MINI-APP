@@ -9,7 +9,7 @@ import { useSafeAreaInsets } from '@granite-js/native/react-native-safe-area-con
 import { usePlaceholderAnimation } from 'hooks/usePlaceHolderAnimation';
 import { useKeyboardVisibility } from 'hooks/useKeyboardVisibility';
 import { globalStyles } from 'styles/globalStyles';
-import { postSearch } from 'api/search';
+import { usePostSearch } from 'api/search';
 import SearchInput from '../components/searchInput';
 import { placeholders } from 'literals/search';
 
@@ -18,6 +18,8 @@ export const Route = createRoute('/', {
 });
 
 function Page() {
+  const { handleNext: postSearchHandleNext } = usePostSearch();
+
   // 🔹 Placeholder 애니메이션 값
   const [value, setValue] = useState('');
   const { currentIndex, currentOpacity, currentY } = usePlaceholderAnimation({
@@ -30,12 +32,11 @@ function Page() {
   const { isKeyboardVisible } = useKeyboardVisibility();
   const isKeyboardHiddenAndiOS = !isKeyboardVisible && getPlatformOS() === 'ios';
 
-  // 🔹 다음 버튼 action: 비동기로 postSearch 요청보내고 shake-ad로 네비게이션
+  // 🔹 다음 버튼 action: 비동기로 postSearch 요청보내고 watch-ad로 네비게이션
   const navigation = Route.useNavigation();
 
   const handleNext = async () => {
-    const { handleNext: postSearchHandleNext } = postSearch();
-    await postSearchHandleNext(value);
+    postSearchHandleNext(value);
     navigation.navigate('/watch-ad');
   };
 

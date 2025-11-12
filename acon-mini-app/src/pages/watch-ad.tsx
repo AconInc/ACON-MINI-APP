@@ -54,7 +54,7 @@ function WatchAd() {
           ref={lottieRef}
           source={{ uri: LOTTIES.DropAcorn }}
           loop={false}
-          autoPlay={false}
+          autoPlay={true}
           style={{
             width: 300,
             height: 270,
