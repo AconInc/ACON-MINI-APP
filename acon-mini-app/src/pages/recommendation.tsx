@@ -8,7 +8,8 @@ import { useSafeAreaInsets } from '@granite-js/native/react-native-safe-area-con
 import { globalStyles } from 'styles/globalStyles';
 
 import PlaceCard from 'components/spotCard';
-import { LOTTIES } from 'constants/assets';
+import { IMAGES } from 'constants/assets';
+import { useSpotStore } from 'store/spotStore';
 
 export const Route = createRoute('/recommendation', {
   validateParams: (params) => params,
@@ -18,9 +19,13 @@ export const Route = createRoute('/recommendation', {
 function Recommendation() {
   const insets = useSafeAreaInsets();
 
+  const spotData = useSpotStore((state) => state.spotData);
+  const { resetState } = useSpotStore((state) => state.actions);
+
   // 🔹 '다시 추천받기' 버튼 action
   const navigation = Route.useNavigation();
   const handleNext = async () => {
+    () => resetState();
     navigation.navigate('/');
   };
 
@@ -33,12 +38,7 @@ function Recommendation() {
           </Text>
         </View>
 
-        <PlaceCard
-          name="장소명장소명장소명장소명소명장소명장소명"
-          hours="21:00"
-          isOpen={true}
-          imageUrl={LOTTIES.DropAcorn}
-        />
+        <PlaceCard name={spotData?.spotName ?? ''} hours="21:00" isOpen={true} imageUrl={IMAGES.AppIcon} />
       </ScrollView>
 
       {/* Next button container */}
