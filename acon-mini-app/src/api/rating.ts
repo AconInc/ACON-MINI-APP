@@ -9,14 +9,11 @@ interface PostRatingRequest {
 export const usePostRating = () => {
   const postRating = async ({ id, rating }: PostRatingRequest) => {
     try {
-      const response = await fetch(
-        `${SECRET_CONFIG.BASE_URL}/api/v1/app-in-toss/spots/rating`,
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ id, rating }),
-        }
-      );
+      const response = await fetch(`${SECRET_CONFIG.BASE_URL}/api/v1/app-in-toss/spots/rating`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id, rating }),
+      });
 
       const rawBody = await response.text();
       console.log('📨 RAW RESPONSE:', rawBody);
@@ -40,7 +37,6 @@ export const usePostRating = () => {
       const result = rawBody ? JSON.parse(rawBody) : null;
       console.log('⭐️ 별점 제출 성공:', result);
       return result;
-
     } catch (error) {
       console.error(error);
       Alert.alert('오류', error instanceof Error ? error.message : '제출 실패');

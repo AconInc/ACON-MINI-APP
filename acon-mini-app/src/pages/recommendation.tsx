@@ -40,8 +40,6 @@ function Recommendation() {
     if (rating !== null) {
       postRating({ id: spotData?.id ?? -1, rating });
       console.log(`⭐️ ${rating}점 제출됨!`);
-    } else {
-      console.log('평가 취소됨!');
     }
   };
   useEffect(() => {
