@@ -11,6 +11,7 @@ import PlaceCard from 'components/spotCard';
 import { IMAGES } from 'constants/assets';
 import { useSpotStore } from 'store/spotStore';
 import { useConfirmRatingDialog } from 'hooks/useRatingAlertDialog';
+import { usePostRating } from 'api/rating';
 
 export const Route = createRoute('/recommendation', {
   validateParams: (params) => params,
@@ -32,11 +33,13 @@ function Recommendation() {
 
   // 🔹 3초 후 별점 ConfirmDialog
   const { open } = useConfirmRatingDialog();
+  const { postRating } = usePostRating();
   const handlePress = async () => {
-    const submitted = await open();
+    const rating = await open();
 
-    if (submitted) {
-      console.log('평가 제출됨!');
+    if (rating !== null) {
+      postRating({ id: spotData?.id ?? -1, rating });
+      console.log(`⭐️ ${rating}점 제출됨!`);
     } else {
       console.log('평가 취소됨!');
     }
