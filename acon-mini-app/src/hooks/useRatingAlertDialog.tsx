@@ -6,16 +6,16 @@ export function useConfirmRatingDialog() {
   const overlay = useOverlay();
 
   const open = () => {
-    return new Promise<boolean>((resolve) => {
+    return new Promise<number | null>((resolve) => {
       overlay.open(({ isOpen, close, exit }) => (
         <ConfirmRatingDialog
           open={isOpen}
-          onConfirm={() => {
-            resolve(true);
+          onConfirm={(value) => {
+            resolve(value);
             close();
           }}
           onCancel={() => {
-            resolve(false);
+            resolve(null);
             close();
           }}
           onExited={exit}

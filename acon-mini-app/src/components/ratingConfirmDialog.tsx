@@ -4,7 +4,7 @@ import { ConfirmDialog, Rating } from '@toss/tds-react-native';
 
 interface ConfirmRatingDialogProps {
   open: boolean;
-  onConfirm: () => void;
+  onConfirm: (rating: number) => void;
   onCancel: () => void;
   onExited: () => void;
 }
@@ -27,7 +27,7 @@ export function ConfirmRatingDialog({ open, onConfirm, onCancel, onExited }: Con
         </ConfirmDialog.Button>
       }
       rightButton={
-        <ConfirmDialog.Button type="primary" onPress={onConfirm}>
+        <ConfirmDialog.Button type="primary" onPress={() => onConfirm(value)}>
           제출
         </ConfirmDialog.Button>
       }
