@@ -10,6 +10,7 @@ import { generateHapticFeedback } from '@apps-in-toss/framework';
 import { globalStyles } from 'styles/globalStyles';
 import { watchAdStyles as styles } from 'styles/watchAdStyles';
 import { LOTTIES } from 'constants/assets';
+import { useInterstitialAd } from 'hooks/useInterstitialAd';
 
 export const Route = createRoute('/watch-ad', {
   validateParams: (params) => params,
@@ -22,8 +23,11 @@ function WatchAd() {
 
   // 🔹 다음 버튼 action
   const navigation = Route.useNavigation();
+  const { loading, showInterstitialAd } = useInterstitialAd();
   const handleNext = async () => {
-    navigation.navigate('/recommendation');
+    showInterstitialAd({
+      onDismiss: () => navigation.navigate('/recommendation'),
+    });
   };
 
   const lottieRef = useRef<LottieView>(null);
