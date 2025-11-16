@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { View } from 'react-native';
+import { Alert, View } from 'react-native';
 
 import { createRoute } from '@granite-js/react-native';
 import LottieView from '@granite-js/native/lottie-react-native';
@@ -24,8 +24,21 @@ function WatchAd() {
 
   // 🔹 다음 버튼 action
   const navigation = Route.useNavigation();
-  const { loading, showInterstitialAd } = useInterstitialAd();
-  const handleNext = async () => {
+    const { loading, loadError, showInterstitialAd } = useInterstitialAd();
+
+  // 🔹 광고 로드 실패 시 처리
+  useEffect(() => {
+    if (loadError) {
+      Alert.alert('광고 로드 실패', '광고를 불러오지 못했어요.\n바로 맛집 추천 화면으로 이동할게요.', [
+        {
+          text: '확인',
+          onPress: () => navigation.navigate('/recommendation'),
+        },
+      ]);
+    }
+  }, [loadError]);
+
+  const handleNext = () => {
     showInterstitialAd({
       onDismiss: () => navigation.navigate('/recommendation'),
     });
