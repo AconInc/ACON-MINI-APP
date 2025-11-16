@@ -17,7 +17,7 @@ export function ConfirmRatingDialog({ open, onConfirm, onCancel, onExited }: Con
       open={open}
       title="추천 받은 장소는 어떠신가요?"
       content={
-        <View style={{ paddingVertical: 16 }}>
+        <View style={{ alignItems: 'center' }}>
           <Rating readonly={false} value={value} max={5} size="large" onValueChange={setValue} />
         </View>
       }
