@@ -11,6 +11,7 @@ import { globalStyles } from 'styles/globalStyles';
 import { watchAdStyles as styles } from 'styles/watchAdStyles';
 import { LOTTIES } from 'constants/assets';
 import { useInterstitialAd } from 'hooks/useInterstitialAd';
+import LoadingDots from 'components/loadingDots';
 
 export const Route = createRoute('/watch-ad', {
   validateParams: (params) => params,
@@ -83,10 +84,11 @@ function WatchAd() {
       {/* Next button */}
       <Button
         display={'block'}
+        disabled={loading}
         viewStyle={[globalStyles.buttonBlock, { marginBottom: insets.bottom }]}
         onPress={handleNext}
       >
-        맛집 확인하기
+        {loading ? <LoadingDots /> : '맛집 확인하기'}
       </Button>
     </View>
   );
