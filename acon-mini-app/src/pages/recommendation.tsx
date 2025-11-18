@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { ScrollView, TouchableOpacity, View } from 'react-native';
 
 import { createRoute } from '@granite-js/react-native';
@@ -10,6 +10,8 @@ import { globalStyles } from 'styles/globalStyles';
 import PlaceCard from 'components/spotCard';
 import { IMAGES } from 'constants/assets';
 import { useSpotStore } from 'store/spotStore';
+import { useConfirmRatingDialog } from 'hooks/useRatingAlertDialog';
+import { usePostRating } from 'api/rating';
 
 export const Route = createRoute('/recommendation', {
   validateParams: (params) => params,
@@ -28,6 +30,25 @@ function Recommendation() {
     resetState();
     navigation.navigate('/');
   };
+
+  // 🔹 3초 후 별점 ConfirmDialog
+  const { open } = useConfirmRatingDialog();
+  const { postRating } = usePostRating();
+  const handlePress = async () => {
+    const rating = await open();
+
+    if (rating !== null) {
+      postRating({ id: spotData?.id ?? -1, rating });
+      console.log(`⭐️ ${rating}점 제출됨!`);
+    }
+  };
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      handlePress();
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <View style={[globalStyles.container]}>
