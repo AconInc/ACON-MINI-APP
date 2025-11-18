@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { ConfirmDialog, Rating } from '@toss/tds-react-native';
 
 interface ConfirmRatingDialogProps {
@@ -17,7 +17,7 @@ export function ConfirmRatingDialog({ open, onConfirm, onCancel, onExited }: Con
       open={open}
       title="추천 받은 장소는 어떠신가요?"
       content={
-        <View style={{ alignItems: 'center' }}>
+        <View style={styles.ratingContainer}>
           <Rating readonly={false} value={value} max={5} size="large" onValueChange={setValue} />
         </View>
       }
@@ -36,3 +36,9 @@ export function ConfirmRatingDialog({ open, onConfirm, onCancel, onExited }: Con
     />
   );
 }
+
+const styles = StyleSheet.create({
+  ratingContainer: {
+    alignItems: 'center',
+  },
+});
