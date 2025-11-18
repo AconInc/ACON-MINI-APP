@@ -55,6 +55,8 @@ export function useInterstitialAd() {
       },
       onError: (error) => {
         console.error('광고 표시 실패:', error);
+        onDismissRef.current?.();
+        onDismissRef.current = undefined;
       },
     });
   };
