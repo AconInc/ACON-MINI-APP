@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { View } from 'react-native';
+import { Alert, View } from 'react-native';
 
 import { createRoute } from '@granite-js/react-native';
 import LottieView from '@granite-js/native/lottie-react-native';
@@ -10,6 +10,8 @@ import { generateHapticFeedback } from '@apps-in-toss/framework';
 import { globalStyles } from 'styles/globalStyles';
 import { watchAdStyles as styles } from 'styles/watchAdStyles';
 import { LOTTIES } from 'constants/assets';
+import { useInterstitialAd } from 'hooks/useInterstitialAd';
+import LoadingDots from 'components/loadingDots';
 
 export const Route = createRoute('/watch-ad', {
   validateParams: (params) => params,
@@ -22,8 +24,24 @@ function WatchAd() {
 
   // 🔹 다음 버튼 action
   const navigation = Route.useNavigation();
-  const handleNext = async () => {
-    navigation.navigate('/recommendation');
+    const { loading, loadError, showInterstitialAd } = useInterstitialAd();
+
+  // 🔹 광고 로드 실패 시 처리
+  useEffect(() => {
+    if (loadError) {
+      Alert.alert('광고 로드 실패', '광고를 불러오지 못했어요.\n바로 맛집 추천 화면으로 이동할게요.', [
+        {
+          text: '확인',
+          onPress: () => navigation.navigate('/recommendation'),
+        },
+      ]);
+    }
+  }, [loadError]);
+
+  const handleNext = () => {
+    showInterstitialAd({
+      onDismiss: () => navigation.navigate('/recommendation'),
+    });
   };
 
   const lottieRef = useRef<LottieView>(null);
@@ -79,10 +97,11 @@ function WatchAd() {
       {/* Next button */}
       <Button
         display={'block'}
+        disabled={loading}
         viewStyle={[globalStyles.buttonBlock, { marginBottom: insets.bottom }]}
         onPress={handleNext}
       >
-        맛집 확인하기
+        {loading ? <LoadingDots /> : '맛집 확인하기'}
       </Button>
     </View>
   );

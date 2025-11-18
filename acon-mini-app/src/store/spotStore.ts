@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 
+/* interface */
 interface SpotData {
   id: number;
   spotName: string;
@@ -11,6 +12,7 @@ interface State {
   isLoading: boolean;
   error: string | null;
 }
+
 interface Actions {
   actions: {
     setSpot: (spotData: SpotData) => void;
@@ -18,11 +20,16 @@ interface Actions {
   };
 }
 
+
+/* initialState */
 const initialState: State = {
   spotData: null,
   isLoading: false,
   error: null,
 };
+
+
+/* store */
 export const useSpotStore = create<State & Actions>((set) => ({
   ...initialState,
   actions: {
