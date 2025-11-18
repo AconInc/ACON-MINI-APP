@@ -10,7 +10,7 @@ interface ConfirmRatingDialogProps {
 }
 
 export function ConfirmRatingDialog({ open, onConfirm, onCancel, onExited }: ConfirmRatingDialogProps) {
-  const [value, setValue] = useState(5);
+  const [value, setValue] = useState(0);
 
   return (
     <ConfirmDialog
@@ -27,7 +27,7 @@ export function ConfirmRatingDialog({ open, onConfirm, onCancel, onExited }: Con
         </ConfirmDialog.Button>
       }
       rightButton={
-        <ConfirmDialog.Button type="primary" onPress={() => onConfirm(value)}>
+        <ConfirmDialog.Button type="primary" disabled={value === 0} onPress={() => onConfirm(value)}>
           제출
         </ConfirmDialog.Button>
       }
