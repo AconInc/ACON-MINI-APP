@@ -15,21 +15,17 @@ export const usePostRating = () => {
         body: JSON.stringify({ id, rating }),
       });
 
-      const rawBody = await response.text();
-      console.log('📨 RAW RESPONSE:', rawBody);
-
+      let result: any = null;
+      try {
+        result = await response.text();
+        console.log('📨 RAW RESPONSE:', result, 'status: ', response.status);
+      } catch (error) {
+        console.error('응답 본문 파싱 실패:', error);
+      }
       if (!response.ok) {
-        let message = '별점 제출 중 오류가 발생했습니다.';
-        const parsed = rawBody ? JSON.parse(rawBody) : null;
-        if (parsed?.message) {
-          message = parsed.message;
-        }
-
+        const message = result?.message || '별점 제출 중 오류가 발생했습니다.';
         throw new Error(message);
       }
-
-      // 성공 응답 처리
-      const result = rawBody ? JSON.parse(rawBody) : null;
       return result;
     } catch (error) {
       console.error(error);
