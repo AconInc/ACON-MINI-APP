@@ -33,7 +33,7 @@ export const usePostRating = () => {
       return result;
     } catch (error) {
       console.error(error);
-      Alert.alert('별점 제출 실패', '문제가 발생했어요.\n나중에 다시 시도해주세요.');
+      Alert.alert('별점 제출 실패', '문제가 발생했습니다.\n나중에 다시 시도해주세요.');
       return null;
     }
   };
