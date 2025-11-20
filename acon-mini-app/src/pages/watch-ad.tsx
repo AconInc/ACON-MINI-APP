@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { Alert, View } from 'react-native';
+import { View } from 'react-native';
 
 import { createRoute } from '@granite-js/react-native';
 import LottieView from '@granite-js/native/lottie-react-native';
@@ -10,8 +10,8 @@ import { generateHapticFeedback } from '@apps-in-toss/framework';
 import { globalStyles } from 'styles/globalStyles';
 import { watchAdStyles as styles } from 'styles/watchAdStyles';
 import { LOTTIES } from 'constants/assets';
-import { useInterstitialAd } from 'hooks/useInterstitialAd';
 import { useNextScreenNavigation } from 'hooks/useNextScreenNavigation';
+import { useWatchAdFlow } from 'hooks/useWatchAdFlow';
 import LoadingDots from 'components/loadingDots';
 
 export const Route = createRoute('/watch-ad', {
@@ -20,29 +20,10 @@ export const Route = createRoute('/watch-ad', {
 });
 
 function WatchAd() {
-  // 🔹 광고
-  const { loading, loadError, showInterstitialAd } = useInterstitialAd();
-
-  // 🔹 네비게이션
-  const { goNext } = useNextScreenNavigation();
-
-  // 🔹 다음 버튼
   const insets = useSafeAreaInsets();
-  const handleNext = () => {
-    showInterstitialAd({
-      onDismiss: goNext,
-    });
-  };
+  const { goNext } = useNextScreenNavigation();
+  const { loading, handleNext } = useWatchAdFlow(goNext);
 
-  // 🔹 광고 로드 실패 시
-  useEffect(() => {
-    if (!loadError) return;
-    Alert.alert('광고 로드 실패', '광고를 불러오지 못했어요.\n바로 맛집 추천 화면으로 이동할게요.', [
-      { text: '확인', onPress: goNext },
-    ]);
-  }, [loadError]);
-
-  // 🔹 로띠
   const lottieRef = useRef<LottieView>(null);
   useEffect(() => {
     if (lottieRef.current) {
@@ -77,9 +58,6 @@ function WatchAd() {
           }}
           onAnimationFailure={() => {
             console.log('Animation Failed');
-          }}
-          onAnimationFinish={() => {
-            console.log('Animation Finished');
           }}
         />
       </View>
