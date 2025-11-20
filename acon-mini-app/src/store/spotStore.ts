@@ -13,14 +13,12 @@ interface SpotData {
 interface State {
   spotData: SpotData | null;
   status: SpotStatus;
-  error: string | null;
-  rawError: any | null;
 }
 
 interface Actions {
   setLoading: () => void;
   setSuccess: (data: SpotData) => void;
-  setError: (message: string, raw?: any) => void;
+  setError: () => void;
   resetState: (keys?: Array<keyof State>) => void;
 }
 
@@ -28,8 +26,6 @@ interface Actions {
 const initialState: State = {
   spotData: null,
   status: 'idle',
-  error: null,
-  rawError: null,
 };
 
 /* store */
@@ -52,11 +48,9 @@ export const useSpotStore = create<State & Actions>((set) => ({
       rawError: null,
     })),
 
-  setError: (message: string, raw?: any) =>
+  setError: () =>
     set(() => ({
       status: 'error',
-      error: message,
-      rawError: raw ?? null,
       spotData: null,
     })),
 
