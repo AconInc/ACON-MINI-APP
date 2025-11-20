@@ -1,5 +1,8 @@
 import { create } from 'zustand';
 
+/* type */
+type SpotStatus = 'idle' | 'loading' | 'success' | 'error';
+
 /* interface */
 interface SpotData {
   id: number;
@@ -9,39 +12,49 @@ interface SpotData {
 
 interface State {
   spotData: SpotData | null;
-  isLoading: boolean;
-  error: string | null;
+  status: SpotStatus;
 }
 
 interface Actions {
-  actions: {
-    setSpot: (spotData: SpotData) => void;
-    resetState: (keys?: Array<keyof State>) => void;
-  };
+  setLoading: () => void;
+  setSuccess: (data: SpotData) => void;
+  setError: () => void;
+  resetState: (keys?: Array<keyof State>) => void;
 }
 
-
-/* initialState */
+/* initial state */
 const initialState: State = {
   spotData: null,
-  isLoading: false,
-  error: null,
+  status: 'idle',
 };
-
 
 /* store */
 export const useSpotStore = create<State & Actions>((set) => ({
   ...initialState,
-  actions: {
-    setSpot: (spotData: SpotData) => set(() => ({ spotData })),
-    resetState: (keys) => {
-      // 전체 상태 초기화
-      if (!keys) {
-        set(initialState);
-        return;
-      }
-      // 일부 상태 초기화
-      set(keys.reduce((acc, key) => ({ ...acc, [key]: initialState[key] }), {}));
-    },
+
+  setLoading: () =>
+    set(() => ({
+      status: 'loading',
+      spotData: null,
+    })),
+
+  setSuccess: (spotData: SpotData) =>
+    set(() => ({
+      status: 'success',
+      spotData,
+    })),
+
+  setError: () =>
+    set(() => ({
+      status: 'error',
+      spotData: null,
+    })),
+
+  resetState: (keys) => {
+    if (!keys) {
+      set(initialState);
+      return;
+    }
+    set(keys.reduce((acc, key) => ({ ...acc, [key]: initialState[key] }), {}));
   },
 }));

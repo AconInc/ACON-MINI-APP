@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { Alert, View } from 'react-native';
+import { View } from 'react-native';
 
 import { createRoute } from '@granite-js/react-native';
 import LottieView from '@granite-js/native/lottie-react-native';
@@ -10,7 +10,8 @@ import { generateHapticFeedback } from '@apps-in-toss/framework';
 import { globalStyles } from 'styles/globalStyles';
 import { watchAdStyles as styles } from 'styles/watchAdStyles';
 import { LOTTIES } from 'constants/assets';
-import { useInterstitialAd } from 'hooks/useInterstitialAd';
+import { useNextScreenNavigation } from 'hooks/useNextScreenNavigation';
+import { useWatchAdFlow } from 'hooks/useWatchAdFlow';
 import LoadingDots from 'components/loadingDots';
 
 export const Route = createRoute('/watch-ad', {
@@ -19,33 +20,11 @@ export const Route = createRoute('/watch-ad', {
 });
 
 function WatchAd() {
-  // 🔹 다음 버튼 UI
   const insets = useSafeAreaInsets();
-
-  // 🔹 다음 버튼 action
-  const navigation = Route.useNavigation();
-    const { loading, loadError, showInterstitialAd } = useInterstitialAd();
-
-  // 🔹 광고 로드 실패 시 처리
-  useEffect(() => {
-    if (loadError) {
-      Alert.alert('광고 로드 실패', '광고를 불러오지 못했어요.\n바로 맛집 추천 화면으로 이동할게요.', [
-        {
-          text: '확인',
-          onPress: () => navigation.navigate('/recommendation'),
-        },
-      ]);
-    }
-  }, [loadError]);
-
-  const handleNext = () => {
-    showInterstitialAd({
-      onDismiss: () => navigation.navigate('/recommendation'),
-    });
-  };
+  const { goNext } = useNextScreenNavigation();
+  const { loading, handleNext } = useWatchAdFlow(goNext);
 
   const lottieRef = useRef<LottieView>(null);
-
   useEffect(() => {
     if (lottieRef.current) {
       lottieRef.current.play();
@@ -79,9 +58,6 @@ function WatchAd() {
           }}
           onAnimationFailure={() => {
             console.log('Animation Failed');
-          }}
-          onAnimationFinish={() => {
-            console.log('Animation Finished');
           }}
         />
       </View>

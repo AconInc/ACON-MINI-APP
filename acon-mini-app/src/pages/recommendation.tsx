@@ -22,7 +22,7 @@ function Recommendation() {
   const insets = useSafeAreaInsets();
 
   const spotData = useSpotStore((state) => state.spotData);
-  const { resetState } = useSpotStore((state) => state.actions);
+  const resetState = useSpotStore((state) => state.resetState);
 
   // 🔹 '다시 추천받기' 버튼 action
   const navigation = Route.useNavigation();
