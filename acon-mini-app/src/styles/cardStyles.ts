@@ -1,47 +1,28 @@
 import { Dimensions, StyleSheet } from 'react-native';
 
 // MARK: - Properties
-const { height: screenHeight } = Dimensions.get('window');
-const heightRatio = screenHeight / 779;
+const { height, width } = Dimensions.get('window');
+const heightRatio = height / 779;
+const widthRatio = width / 375;
 
 export const cardStyles = StyleSheet.create({
   card: {
-    shadowColor: '#3a3a3aff',
-    shadowOpacity: 0.8,
-    shadowRadius: 20,
-    shadowOffset: { width: 0, height: 2 },
-    elevation: 4,
-    marginHorizontal: 24,
+    marginHorizontal: 0,
+    marginVertical: -26 + (height > 750 ? 33 * heightRatio : 0),
+    alignItems: 'center',
   },
   image: {
     width: '100%',
-    height: 444 * heightRatio,
+    aspectRatio: 300 / 440,
     justifyContent: 'flex-start',
-    borderRadius: 20,
-    overflow: 'hidden',
-  },
-  imageStyle: {
-    borderRadius: 16,
-  },
-  gradientContainer: {
-    ...StyleSheet.absoluteFillObject,
   },
   textContainer: {
     position: 'absolute',
-    top: 20,
-    left: 20,
-    right: 20,
-  },
-  openTimeContainer: {
-    marginTop: 4,
-    flexDirection: 'row',
+    top: 120 * widthRatio,
+    left: 64 * widthRatio,
+    right: 64 * widthRatio,
+    height: 80,
+    justifyContent: 'center',
     alignItems: 'center',
-    gap: 6,
-  },
-  dot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-    marginRight: 6,
   },
 });
