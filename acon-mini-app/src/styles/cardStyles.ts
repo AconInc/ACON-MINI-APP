@@ -1,19 +1,17 @@
 import { Dimensions, StyleSheet } from 'react-native';
 
-// MARK: - Properties
 const { height, width } = Dimensions.get('window');
-const heightRatio = height / 779;
-const widthRatio = width / 375;
+const heightRatio = height / 779; // devided by design height
+const widthRatio = width / 375; // devided by design width
 
 export const cardStyles = StyleSheet.create({
   card: {
-    marginHorizontal: 0,
     marginVertical: -26 + (height > 750 ? 33 * heightRatio : 0),
     alignItems: 'center',
   },
   image: {
     width: '100%',
-    aspectRatio: 300 / 440,
+    aspectRatio: 300 / 440, // cardWidth / cardHeight
     justifyContent: 'flex-start',
   },
   textContainer: {
