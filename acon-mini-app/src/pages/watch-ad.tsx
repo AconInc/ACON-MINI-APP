@@ -11,7 +11,7 @@ import { globalStyles } from 'styles/globalStyles';
 import { watchAdStyles as styles } from 'styles/watchAdStyles';
 import { LOTTIES } from 'constants/assets';
 import { useInterstitialAd } from 'hooks/useInterstitialAd';
-import { useSpotStore } from 'store/spotStore';
+import { useNextScreenNavigation } from 'hooks/useNextScreenNavigation';
 import LoadingDots from 'components/loadingDots';
 
 export const Route = createRoute('/watch-ad', {
@@ -24,46 +24,22 @@ function WatchAd() {
   const { loading, loadError, showInterstitialAd } = useInterstitialAd();
 
   // 🔹 네비게이션
-  const { status } = useSpotStore();
-  const navigation = Route.useNavigation();
-  const goNextScreen = () => {
-    switch (status) {
-      case 'loading':
-        navigation.navigate('/loading');
-        break;
-      case 'error':
-        navigation.navigate('/failed');
-        break;
-      case 'success':
-        navigation.navigate('/recommendation');
-        break;
-      default:
-        navigation.navigate('/failed');
-    }
-  };
+  const { goNext } = useNextScreenNavigation();
 
   // 🔹 다음 버튼
   const insets = useSafeAreaInsets();
   const handleNext = () => {
     showInterstitialAd({
-      onDismiss: () => {
-        goNextScreen();
-      },
+      onDismiss: goNext,
     });
   };
 
   // 🔹 광고 로드 실패 시
   useEffect(() => {
-    if (loadError) {
-      Alert.alert('광고 로드 실패', '광고를 불러오지 못했어요.\n바로 맛집 추천 화면으로 이동할게요.', [
-        {
-          text: '확인',
-          onPress: () => {
-            goNextScreen();
-          },
-        },
-      ]);
-    }
+    if (!loadError) return;
+    Alert.alert('광고 로드 실패', '광고를 불러오지 못했어요.\n바로 맛집 추천 화면으로 이동할게요.', [
+      { text: '확인', onPress: goNext },
+    ]);
   }, [loadError]);
 
   // 🔹 로띠
