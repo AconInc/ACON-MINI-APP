@@ -1,15 +1,10 @@
 import { create } from 'zustand';
+import { SpotData } from 'types/spot';
 
 /* type */
 type SpotStatus = 'idle' | 'loading' | 'success' | 'error';
 
 /* interface */
-interface SpotData {
-  id: number;
-  spotName: string;
-  category: string;
-}
-
 interface State {
   spotData: SpotData | null;
   status: SpotStatus;
