@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View } from 'react-native';
 
 import { createRoute, Image } from '@granite-js/react-native';
@@ -9,6 +9,7 @@ import { globalStyles } from 'styles/globalStyles';
 import { watchAdStyles as styles } from 'styles/watchAdStyles';
 import { IMAGES } from 'constants/assets';
 import LoadingDots from 'components/loadingDots';
+import { useSpotStore } from 'store/spotStore';
 
 export const Route = createRoute('/loading', {
   validateParams: (params) => params,
@@ -18,6 +19,17 @@ export const Route = createRoute('/loading', {
 function Loading() {
   // 🔹 다음 버튼 UI
   const insets = useSafeAreaInsets();
+
+  const { status } = useSpotStore();
+  const navigation = Route.useNavigation();
+
+  useEffect(() => {
+    if (status === 'success') {
+      navigation.replace('/recommendation');
+    } else if (status === 'error') {
+      navigation.replace('/failed');
+    }
+  }, [status]);
 
   return (
     <View style={[globalStyles.container]}>
