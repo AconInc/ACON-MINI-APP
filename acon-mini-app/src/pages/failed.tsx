@@ -8,22 +8,21 @@ import { useSafeAreaInsets } from '@granite-js/native/react-native-safe-area-con
 import { globalStyles } from 'styles/globalStyles';
 import { watchAdStyles as styles } from 'styles/watchAdStyles';
 import { IMAGES } from 'constants/assets';
+import { useSpotStore } from 'store/spotStore';
 
 export const Route = createRoute('/failed', {
   validateParams: (params) => params,
-  component: Loading,
+  component: Failed,
 });
 
-function Loading() {
-  // 🔹 다음 버튼 UI
+function Failed() {
+  // 🔹 다시 시도하기 버튼
   const insets = useSafeAreaInsets();
-
-  // 🔹 '다시 추천받기' 버튼 action
   const navigation = Route.useNavigation();
+  const resetState = useSpotStore().resetState;
   const handleNext = async () => {
-    console.log('다시 시도하기 클릭됨');
-    navigation.navigate('/loading');
-    // TODO: 재시도 로직 추가
+    resetState();
+    navigation.navigate('/');
   };
 
   return (
