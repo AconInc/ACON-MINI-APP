@@ -52,7 +52,7 @@ export const usePostSearch = () => {
         spotName: result.spotName,
         category: result.category,
       });
-    } catch (err: any) {
+    } catch (err: unknown) {
       // 5) 네트워크 오류 등
       console.error('[NETWORK ERROR]', err);
       setError();
