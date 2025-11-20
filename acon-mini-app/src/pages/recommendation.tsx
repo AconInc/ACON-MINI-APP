@@ -8,7 +8,6 @@ import { useSafeAreaInsets } from '@granite-js/native/react-native-safe-area-con
 import { globalStyles } from 'styles/globalStyles';
 
 import PlaceCard from 'components/spotCard';
-import { IMAGES } from 'constants/assets';
 import { useSpotStore } from 'store/spotStore';
 import { useConfirmRatingDialog } from 'hooks/useRatingAlertDialog';
 import { usePostRating } from 'api/rating';
@@ -53,13 +52,13 @@ function Recommendation() {
   return (
     <View style={[globalStyles.container]}>
       <ScrollView>
-        <View style={[globalStyles.titleView, { marginBottom: 40 }]}>
+        <View style={[globalStyles.titleView, { marginBottom: 0 }]}>
           <Text typography="st5" fontWeight="semibold" color="#111" textAlign="center">
             여기는 어떠세요?
           </Text>
         </View>
 
-        <PlaceCard name={spotData?.spotName ?? ''} hours="21:00" isOpen={true} imageUrl={IMAGES.AppIcon} />
+        <PlaceCard spotData={spotData ?? { id: -1, spotName: '', category: '' }} />
       </ScrollView>
 
       {/* Next button container */}
