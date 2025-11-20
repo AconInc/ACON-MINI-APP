@@ -35,8 +35,6 @@ export const useSpotStore = create<State & Actions>((set) => ({
   setLoading: () =>
     set(() => ({
       status: 'loading',
-      error: null,
-      rawError: null,
       spotData: null,
     })),
 
@@ -44,8 +42,6 @@ export const useSpotStore = create<State & Actions>((set) => ({
     set(() => ({
       status: 'success',
       spotData,
-      error: null,
-      rawError: null,
     })),
 
   setError: () =>
