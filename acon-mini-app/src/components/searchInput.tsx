@@ -29,6 +29,7 @@ export default function SearchInput({
         placeholder=""
         placeholderTextColor={colors.grey500}
         returnKeyType="search"
+        maxLength={100}
       />
       {value === '' && (
         <View style={StyleSheet.absoluteFill} pointerEvents="none">
