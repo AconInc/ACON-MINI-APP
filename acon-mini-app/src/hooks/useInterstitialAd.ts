@@ -1,11 +1,12 @@
 import { useCallback, useRef, useState } from 'react';
 
 import { useFocusEffect } from '@granite-js/native/@react-navigation/native';
-import { GoogleAdMob } from '@apps-in-toss/framework';
+import { GoogleAdMob, getOperationalEnvironment } from '@apps-in-toss/framework';
 
 import { SECRET_CONFIG } from 'config/secretConfig';
 
-const AD_GROUP_ID = SECRET_CONFIG.AD_GROUP_ID;
+const isSandbox = getOperationalEnvironment() === 'sandbox';
+const AD_GROUP_ID = isSandbox ? SECRET_CONFIG.AD_GROUP_ID_SANDBOX : SECRET_CONFIG.AD_GROUP_ID_PRODUCTION;
 
 export function useInterstitialAd() {
   const [loading, setLoading] = useState(true);
