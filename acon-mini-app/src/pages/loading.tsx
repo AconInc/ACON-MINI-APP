@@ -20,7 +20,7 @@ function Loading() {
   // 🔹 다음 버튼 UI
   const insets = useSafeAreaInsets();
 
-  const { status } = useSpotStore();
+  const status = useSpotStore((state) => state.status);
   const navigation = Route.useNavigation();
 
   useEffect(() => {

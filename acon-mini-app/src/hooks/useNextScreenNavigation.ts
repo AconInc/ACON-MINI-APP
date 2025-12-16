@@ -3,7 +3,7 @@ import { Route } from 'pages';
 import { useSpotStore } from 'store/spotStore';
 
 export const useNextScreenNavigation = () => {
-  const { status } = useSpotStore();
+  const status = useSpotStore((state) => state.status);
   const navigation = Route.useNavigation();
 
   const goNext = useCallback(() => {
