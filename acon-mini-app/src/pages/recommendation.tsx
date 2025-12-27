@@ -1,0 +1,76 @@
+import React, { useEffect } from 'react';
+import { ScrollView, TouchableOpacity, View } from 'react-native';
+
+import { createRoute } from '@granite-js/react-native';
+import { Text } from '@toss/tds-react-native';
+import { useSafeAreaInsets } from '@granite-js/native/react-native-safe-area-context';
+
+import { globalStyles } from 'styles/globalStyles';
+
+import PlaceCard from 'components/spotCard';
+import { useSpotStore } from 'store/spotStore';
+import { useConfirmRatingDialog } from 'hooks/useRatingAlertDialog';
+import { usePostRating } from 'api/rating';
+
+export const Route = createRoute('/recommendation', {
+  validateParams: (params) => params,
+  component: Recommendation,
+});
+
+function Recommendation() {
+  const insets = useSafeAreaInsets();
+
+  const spotData = useSpotStore((state) => state.spotData);
+  const resetState = useSpotStore((state) => state.resetState);
+
+  // 🔹 '다시 추천받기' 버튼 action
+  const navigation = Route.useNavigation();
+  const handleNext = async () => {
+    resetState();
+    navigation.navigate('/');
+  };
+
+  // 🔹 3초 후 별점 ConfirmDialog
+  const { open } = useConfirmRatingDialog();
+  const { postRating } = usePostRating();
+  const handlePress = async () => {
+    const rating = await open();
+
+    if (rating !== null) {
+      postRating({ id: spotData?.id ?? -1, rating });
+      console.log(`⭐️ ${rating}점 제출됨!`);
+    }
+  };
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      handlePress();
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  return (
+    <View style={[globalStyles.container]}>
+      <ScrollView>
+        <View style={[globalStyles.titleView, { marginBottom: 0 }]}>
+          <Text typography="st5" fontWeight="semibold" color="#111" textAlign="center">
+            여기는 어떠세요?
+          </Text>
+        </View>
+
+        <PlaceCard spotData={spotData ?? { id: -1, spotName: '', category: '' }} />
+      </ScrollView>
+
+      {/* Next button container */}
+      <TouchableOpacity
+        onPress={handleNext}
+        activeOpacity={0.9}
+        style={[globalStyles.greyButtonContainer, { marginBottom: insets.bottom }]}
+      >
+        <Text typography="t5" fontWeight="semibold" color="#fff" textAlign="center">
+          다시 추천받기
+        </Text>
+      </TouchableOpacity>
+    </View>
+  );
+}

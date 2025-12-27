@@ -71,3 +71,8 @@ yarn-error.log*
 *.xcodeproj/project.xcworkspace
 *.xcodeproj/xcuserdata
 *.xcworkspace/xcuserdata
+
+# ================================
+# Configurations
+# ================================
+secretConfig.ts

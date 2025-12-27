@@ -1,104 +1,78 @@
-import { createRoute } from '@granite-js/react-native';
-import React from 'react';
-import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
+import { Keyboard, ScrollView, TouchableWithoutFeedback, View } from 'react-native';
+
+import { getPlatformOS } from '@apps-in-toss/framework';
+import { createRoute, KeyboardAboveView } from '@granite-js/react-native';
+import { Button, Text } from '@toss/tds-react-native';
+import { useSafeAreaInsets } from '@granite-js/native/react-native-safe-area-context';
+
+import { usePlaceholderAnimation } from 'hooks/usePlaceHolderAnimation';
+import { useKeyboardVisibility } from 'hooks/useKeyboardVisibility';
+import { globalStyles } from 'styles/globalStyles';
+import { usePostSearch } from 'api/search';
+import SearchInput from '../components/searchInput';
+import { placeholders } from 'literals/search';
 
 export const Route = createRoute('/', {
   component: Page,
 });
 
 function Page() {
-  const navigation = Route.useNavigation();
+  // 🔹 Placeholder 애니메이션 값
+  const [value, setValue] = useState('');
+  const { currentIndex, currentOpacity, currentY } = usePlaceholderAnimation({
+    placeholders,
+    value,
+  });
 
-  const goToAboutPage = () => {
-    navigation.navigate('/about');
+  // 🔹 다음 버튼 UI (keyboard-aware 애니메이션)
+  const insets = useSafeAreaInsets();
+  const { isKeyboardVisible } = useKeyboardVisibility();
+  const isKeyboardHiddenAndiOS = !isKeyboardVisible && getPlatformOS() === 'ios';
+
+  // 🔹 다음 버튼 action: 비동기로 postSearch 요청보내고 watch-ad로 네비게이션
+  const navigation = Route.useNavigation();
+  const { handleNext: postSearchHandleNext } = usePostSearch();
+  const handleNext = async () => {
+    postSearchHandleNext(value);
+    navigation.navigate('/watch-ad');
   };
 
   return (
-    <Container>
-      <Text style={styles.title}>🎉 Welcome! 🎉</Text>
-      <Text style={styles.subtitle}>
-        This is a demo page for the <Text style={styles.brandText}>Granite</Text> Framework.
-      </Text>
-      <Text style={styles.description}>This page was created to showcase the features of the Granite.</Text>
-      <TouchableOpacity style={styles.button} onPress={goToAboutPage}>
-        <Text style={styles.buttonText}>Go to About Page</Text>
-      </TouchableOpacity>
-    </Container>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+      <View style={[globalStyles.container]}>
+        <ScrollView>
+          <View style={[globalStyles.titleView, { marginBottom: 32 }]}>
+            <Text typography="st5" fontWeight="semibold" color="#111">
+              {`No more Research,\nAcon`}
+            </Text>
+          </View>
+
+          <SearchInput
+            value={value}
+            onChangeText={setValue}
+            currentIndex={currentIndex}
+            currentOpacity={currentOpacity}
+            currentY={currentY}
+            placeholders={placeholders}
+          />
+        </ScrollView>
+
+        {/* Next button container */}
+        <KeyboardAboveView>
+          <Button
+            display={isKeyboardVisible ? 'full' : 'block'}
+            viewStyle={[
+              isKeyboardVisible ? globalStyles.buttonFull : globalStyles.buttonBlock,
+              { marginBottom: isKeyboardHiddenAndiOS ? insets.bottom : 0 },
+            ]}
+            onPress={handleNext}
+            disabled={!value.trim()}
+          >
+            다음
+          </Button>
+        </KeyboardAboveView>
+      </View>
+    </TouchableWithoutFeedback>
   );
 }
-
-function Container({ children }: { children: React.ReactNode }) {
-  return <View style={styles.container}>{children}</View>;
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 16,
-    backgroundColor: 'white',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  brandText: {
-    color: '#0064FF',
-    fontWeight: 'bold',
-  },
-  text: {
-    fontSize: 24,
-    color: '#202632',
-    textAlign: 'center',
-    marginBottom: 10,
-  },
-  title: {
-    fontSize: 32,
-    fontWeight: 'bold',
-    color: '#1A202C',
-    textAlign: 'center',
-    marginBottom: 16,
-  },
-  subtitle: {
-    fontSize: 18,
-    color: '#4A5568',
-    textAlign: 'center',
-    marginBottom: 24,
-  },
-  description: {
-    fontSize: 16,
-    color: '#718096',
-    textAlign: 'center',
-    marginBottom: 32,
-    lineHeight: 24,
-  },
-  button: {
-    backgroundColor: '#0064FF',
-    paddingVertical: 12,
-    paddingHorizontal: 32,
-    borderRadius: 8,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
-  },
-  buttonText: {
-    color: 'white',
-    fontSize: 16,
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-  codeContainer: {
-    padding: 8,
-    backgroundColor: '#333',
-    borderRadius: 4,
-    width: '100%',
-  },
-  code: {
-    color: 'white',
-    fontFamily: 'monospace',
-    letterSpacing: 0.5,
-    fontSize: 14,
-  },
-});
